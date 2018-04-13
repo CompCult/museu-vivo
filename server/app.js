@@ -9,9 +9,9 @@ var hash = require('bcrypt-nodejs');
 var path = require('path');
 
 // mongoose local
-mongoose.connect('mongodb://localhost/mean-auth');
+//mongoose.connect('mongodb://localhost/mean-auth');
 // mongoose 
-//mongoose.connect('mongodb://compcult:Atelier1516@josejose-shard-00-00-famcg.mongodb.net:27017,josejose-shard-00-01-famcg.mongodb.net:27017,josejose-shard-00-02-famcg.mongodb.net:27017/test?ssl=true&replicaSet=JoseJose-shard-0&authSource=admin');
+mongoose.connect('mongodb://compcult:Atelier1516@minha-arvore-shard-00-00-hv0nd.mongodb.net:27017,minha-arvore-shard-00-01-hv0nd.mongodb.net:27017,minha-arvore-shard-00-02-hv0nd.mongodb.net:27017/test?ssl=true&replicaSet=minha-arvore-shard-0&authSource=admin');
 
 //Get the default connection
 var db = mongoose.connection;
