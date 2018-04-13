@@ -1,0 +1,42 @@
+// user model
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var autoInc   = require('mongoose-sequence')(mongoose);
+
+var User = new Schema({
+  _id: Number,
+  name: String,
+  email: {
+  	type: String,
+  	lowercase: true,
+    unique: true
+  },
+  picture: String,
+  password: String,
+  birth: Date,
+  sex: String,
+  phone: String,
+  street: String,
+  complement: String,
+  number: Number,
+  neighborhood: String,
+  city: String,
+  state: String,
+  zipcode: String,
+  points: {
+  	type: Number,
+    default: 0
+  },
+  sec_points: {
+    type: Number,
+    default: 0
+  },
+  banned_until: Date,
+  created_at: {
+    type: Date,
+    default: Date.now
+  }
+});
+
+User.plugin(autoInc, {id: "user_id"});
+module.exports = mongoose.model('users', User);
