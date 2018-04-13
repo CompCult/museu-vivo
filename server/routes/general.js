@@ -9,17 +9,17 @@ router.get('/current_date', function(req, res) {
 
 //Version
 router.get('/current_version', function(req, res) {
-  return res.status(200).send(ENV['VERSION']);
+  return res.status(200).send(process.env.VERSION);
 });
 
 //Maintenance
 router.get('/in_maintenance', function(req, res) {
-  return res.status(200).send(ENV['MAINTENANCE']);
+  return res.status(200).send(process.env.MAINTENANCE);
 });
 
 //Welcome message
 router.get('/message', function(req, res) {
-  return res.status(200).send(ENV['MESSAGE']);
+  return res.status(200).send(process.env.MESSAGE);
 });
 
 
