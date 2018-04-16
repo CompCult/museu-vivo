@@ -7,6 +7,7 @@ var expressSession = require('express-session');
 var mongoose = require('mongoose');
 var hash = require('bcrypt-nodejs');
 var path = require('path');
+var cors = require('cors');
 
 // mongoose local
 //mongoose.connect('mongodb://localhost/mean-auth');
