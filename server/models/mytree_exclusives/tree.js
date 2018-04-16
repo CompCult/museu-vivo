@@ -18,8 +18,8 @@ var Tree = new Schema({
   },
   name: String,
   geolocation: { 
-    lat: Number, 
-    lng: Number
+    lat: String, 
+    lng: String
   },
   planting_date: Date
 });

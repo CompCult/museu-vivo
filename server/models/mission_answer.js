@@ -22,8 +22,8 @@ var MissionAnswer = new Schema({
   video: String,
   text: String,
   geolocation: { 
-    lat: Number, 
-    lng: Number
+    lat: String, 
+    lng: String
   },
   created_at: {
     type: Date,

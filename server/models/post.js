@@ -13,8 +13,8 @@ var Post = new Schema({
   video: String,
   text_msg: String,
   geolocation: { 
-    lat: Number, 
-    lng: Number
+    lat: String, 
+    lng: String
   },
   points: {
     type: Number,

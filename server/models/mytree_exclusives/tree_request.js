@@ -13,8 +13,8 @@ var TreeRequest = new Schema({
   },
   tree_name: String,
   geolocation: {
-    lat: Number,
-    lng: Number
+    lat: String,
+    lng: String
   },
   quantity: Number,
   requester_name: String,

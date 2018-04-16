@@ -51,12 +51,13 @@ router.post('/', function(req, res) {
   if(req.body.answer_date) request.answer_date = new Date(req.body.answer_date);
 
   if (!canUserRequest(req.body._user, req.body.quantity)) {
-    res.status(400).send('A quantidade pedida ultrapassa o limite do uruário.');
+    res.status(400).send('A quantidade pedida ultrapassa o limite do usuário.');
   } else {
     request.save(function(err) {
       if (err) {
         res.status(400).send(err);
       } else {
+        createTrees(request);
         res.status(200).send(request);
       }
     });
@@ -100,10 +101,15 @@ router.delete('/:tree_id', function(req, res) {
 canUserRequest = function(id, quantity) {
   User.findById(id, function(err, user) {
     if (user && (user.request_limit < quantity)) {
-       return false;
+      console.log('menor');
+      return false;
     }
-    return true;
   }); 
+  return true;
+} 
+
+createTrees = function(request) {
+  console.log(request);
 } 
 
 module.exports = router;
