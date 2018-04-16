@@ -3,6 +3,7 @@ var router = express.Router();
 
 
 var TreeRequest = require('../models/mytree_exclusives/tree_request.js');
+var Tree = require('../models/mytree_exclusives/tree.js');
 var User = require('../models/user.js');
 
 
@@ -109,13 +110,14 @@ createTrees = function(request) {
     tree._type            = request._type;
     tree._request_id      = request._id;
     tree.name             = request.tree_name;
-    tree.geolocation      = req.body.geolocation;
+    tree.location_lat     = request.location_lat;
+    tree.location_lng     = request.location_lng;
 
     tree.save(function(err) {
       if (err) {
-        res.status(400).send(err);
+        console.log('algo deu ruim');
       } else {
-        res.status(200).send(tree);
+        console.log('done');
       }
     });
   }
