@@ -44,7 +44,8 @@ router.post('/', function(req, res) {
   request._user            = req.body._user;
   request._type            = req.body._type;
   request.tree_name        = req.body.tree_name;
-  request.geolocation      = req.body.geolocation;
+  request.location_lat     = req.body.location_lat;
+  request.location_lng     = req.body.location_lng;
   request.quantity         = req.body.quantity;
   request.requester_name   = req.body.requester_name;
   request.place			       = req.body.place;
@@ -72,7 +73,8 @@ router.put('/:tree_id', function(req, res) {
     if (req.body._user) request._user                   = req.body._user;
 	  if (req.body._type) request._type             		  = req.body._type;
     if (req.body.tree_name) request.tree_name           = req.body.tree_name;
-    if (req.body.geolocation) request.geolocation       = req.body.geolocation;
+    if (req.body.location_lat) request.location_lat     = req.body.location_lat;
+    if (req.body.location_lng) request.location_lng     = req.body.location_lng;
     if (req.body.quantity) request.quantity             = req.body.quantity;
 	  if (req.body.requester_name) request.requester_name = req.body.requester_name;
   	if (req.body.place) request.place			              = req.body.place;

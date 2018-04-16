@@ -43,7 +43,8 @@ router.post('/', function(req, res) {
   tree._type            = req.body._type;
   tree._request_id      = req.body._request_id;
   tree.name             = req.body.name;
-  tree.geolocation      = req.body.geolocation;
+  tree.location_lat     = req.body.location_lat;
+  tree.location_lng     = req.body.location_lng;
   if(req.body.planting_date) tree.planting_date = new Date(req.body.planting_date);
 
   tree.save(function(err) {
@@ -62,7 +63,8 @@ router.put('/:tree_id', function(req, res) {
   	if (req.body._type) tree._type            		= req.body._type;
     if (req.body._request_id) tree._request_id    = req.body._request_id;
   	if (req.body.name) tree.name             			= req.body.name;
-  	if (req.body.geolocation) tree.geolocation    = req.body.geolocation;
+  	if (req.body.location_lat) tree.location_lat  = req.body.location_lat;
+    if (req.body.location_lng) tree.location_lng  = req.body.location_lng;
   	if(req.body.planting_date) tree.planting_date = new Date(req.body.planting_date);
     
     tree.save(function(err) {

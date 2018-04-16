@@ -17,10 +17,8 @@ var Tree = new Schema({
     ref: '../tree_type.js'
   },
   name: String,
-  geolocation: { 
-    lat: String, 
-    lng: String
-  },
+  location_lat: String, 
+  location_lng: String,
   planting_date: Date
 });
 

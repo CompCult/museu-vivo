@@ -60,7 +60,8 @@ router.post('/', function(req, res) {
   if (req.body.image) post.image             = uploadFile(req.body.image, '.jpg', req.body._user);
   if (req.body.audio) post.audio             = req.body.audio;
   if (req.body.video) post.video             = req.body.video;
-  if (req.body.geolocation) post.geolocation = req.body.geolocation;
+  if (req.body.location_lat) post.location_lat = req.body.location_lat;
+  if (req.body.location_lng) post.location_lng = req.body.location_lng;
 
   post.save(function(err) {
     if (err) {
@@ -78,7 +79,8 @@ router.put('/:post_id', function(req, res) {
     if (req.body.image) post.image             = uploadFile(req.body.image, '.jpg', req.body._user);
     if (req.body.audio) post.audio             = req.body.audio;
     if (req.body.video) post.video             = req.body.video;
-    if (req.body.geolocation) post.geolocation = req.body.geolocation;
+    if (req.body.location_lat) post.location_lat = req.body.location_lat;
+    if (req.body.location_lng) post.location_lng = req.body.location_lng;
     
     post.save(function(err) {
       if (err) {

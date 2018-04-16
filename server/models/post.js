@@ -12,10 +12,8 @@ var Post = new Schema({
   audio: String,
   video: String,
   text_msg: String,
-  geolocation: { 
-    lat: String, 
-    lng: String
-  },
+  location_lat: String, 
+  location_lng: String,
   points: {
     type: Number,
     default: 0

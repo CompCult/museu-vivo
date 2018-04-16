@@ -66,7 +66,8 @@ router.post('/', function(req, res) {
   if (req.body.audio) missionAnswer.audio     = uploadFile(req.body.audio, '.mp3', req.body._user);
   if (req.body.video) missionAnswer.video     = uploadFile(req.body.video, '.mp4', req.body._user);
   if (req.body.text) missionAnswer.text               = req.body.text;
-  if (req.body.geolocation) missionAnswer.geolocation = req.body.geolocation;
+  if (req.body.location_lat) missionAnswer.location_lat = req.body.location_lat;
+  if (req.body.location_lng) missionAnswer.location_lng = req.body.location_lng;
 
   missionAnswer.save(function(err) {
     if (err) {
@@ -87,7 +88,8 @@ router.put('/:mission_id', function(req, res) {
     if (req.body.audio) missionAnswer.audio             = req.body.audio;
     if (req.body.video) missionAnswer.video             = req.body.video;
     if (req.body.text) missionAnswer.text               = req.body.text;
-    if (req.body.geolocation) missionAnswer.geolocation = req.body.geolocation;
+    if (req.body.location_lat) missionAnswer.location_lat = req.body.location_lat;
+    if (req.body.location_lng) missionAnswer.location_lng = req.body.location_lng;
     
     missionAnswer.save(function(err) {
       if (err) {
