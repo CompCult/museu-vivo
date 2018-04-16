@@ -41,6 +41,7 @@ router.post('/', function(req, res) {
   var tree              = new Tree();
   tree._user            = req.body._user;
   tree._type            = req.body._type;
+  tree._request_id      = req.body._request_id;
   tree.name             = req.body.name;
   tree.geolocation      = req.body.geolocation;
   if(req.body.planting_date) tree.planting_date = new Date(req.body.planting_date);
@@ -57,11 +58,12 @@ router.post('/', function(req, res) {
 // Update
 router.put('/:tree_id', function(req, res) {
   Tree.findById(req.params.tree_id, function(err, tree) {
-    if (req.body._user) tree._user           	  = req.body._user;
-	if (req.body._type) tree._type            		= req.body._type;
-	if (req.body.name) tree.name             			= req.body.name;
-	if (req.body.geolocation) tree.geolocation    = req.body.geolocation;
-	if(req.body.planting_date) tree.planting_date = new Date(req.body.planting_date);
+    if (req.body._user) tree._user           	    = req.body._user;
+  	if (req.body._type) tree._type            		= req.body._type;
+    if (req.body._request_id) tree._request_id    = req.body._request_id;
+  	if (req.body.name) tree.name             			= req.body.name;
+  	if (req.body.geolocation) tree.geolocation    = req.body.geolocation;
+  	if(req.body.planting_date) tree.planting_date = new Date(req.body.planting_date);
     
     tree.save(function(err) {
       if (err) {

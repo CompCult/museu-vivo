@@ -11,6 +11,12 @@ var TreeRequest = new Schema({
     type: Number,
     ref: '../tree_type.js'
   },
+  tree_name: String,
+  geolocation: {
+    lat: Number,
+    lng: Number
+  },
+  quantity: Number,
   requester_name: String,
   place: String,
   request_date: {

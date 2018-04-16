@@ -74,10 +74,10 @@ router.post('/', function(req, res) {
 // Update
 router.put('/:post_id', function(req, res) {
   Post.findById(req.params.post_id, function(err, post) {
-    if (req.body.text_msg) post.text_msg    = req.body.text_msg;
+    if (req.body.text_msg) post.text_msg       = req.body.text_msg;
     if (req.body.image) post.image             = uploadFile(req.body.image, '.jpg', req.body._user);
     if (req.body.audio) post.audio             = req.body.audio;
-    if (req.body.video) post.video             = req.body.has_audio;
+    if (req.body.video) post.video             = req.body.video;
     if (req.body.geolocation) post.geolocation = req.body.geolocation;
     
     post.save(function(err) {
@@ -96,7 +96,7 @@ router.delete('/:post_id', function(req, res) {
     if (err) {
       res.status(400).send(err);
     } else {
-      res.status(200).send("Missão removida.");
+      res.status(200).send("POst removido.");
     }
   });
 });

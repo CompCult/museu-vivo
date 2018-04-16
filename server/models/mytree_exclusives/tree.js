@@ -7,7 +7,12 @@ var Tree = new Schema({
   _user: { 
     type: Number, 
     ref: '../user.js' 
-  }, _type: { 
+  }, 
+  _request_id: { 
+    type: Number, 
+    ref: '../tree_request.js' 
+  },
+  _type: { 
     type: Number,
     ref: '../tree_type.js'
   },
