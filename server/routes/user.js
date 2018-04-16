@@ -37,7 +37,7 @@ router.post('/register', function(req, res) {
               // Some other error
               return res.status(400).send(err);
         } else {
-          res.status(200).send(user.id);
+          res.status(200).send(user);
         }
       });
     }
