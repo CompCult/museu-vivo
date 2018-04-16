@@ -61,6 +61,7 @@ router.post('/update/:user_id', function(req, res) {
     if (req.body.zipcode) user.zipcode = req.body.zipcode;
     if (req.body.points) user.points = req.body.points;
     if (req.body.sec_points) user.sec_points = req.body.sec_points;
+    if (req.body.request_limit) user.request_limit = req.body.request_limit;
     if (req.body.banned_until) user.banned_until = new Date(req.body.banned_until);
 
 

@@ -31,6 +31,10 @@ var User = new Schema({
     type: Number,
     default: 0
   },
+  request_limit: {
+    type: Number,
+    default: 5
+  },
   banned_until: Date,
   created_at: {
     type: Date,
