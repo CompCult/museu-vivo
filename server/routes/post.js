@@ -56,10 +56,10 @@ router.get('/', function(req, res) {
 router.post('/', function(req, res) {
   var post     = new Post();
   post._user   = req.body._user;
-  if (req.body.text_msg)post.text_msg         = req.body.text_msg;
+  if (req.body.text_msg) post.text_msg       = req.body.text_msg;
   if (req.body.image) post.image             = uploadFile(req.body.image, '.jpg', req.body._user);
   if (req.body.audio) post.audio             = req.body.audio;
-  if (req.body.video) post.video             = req.body.has_audio;
+  if (req.body.video) post.video             = req.body.video;
   if (req.body.geolocation) post.geolocation = req.body.geolocation;
 
   post.save(function(err) {
