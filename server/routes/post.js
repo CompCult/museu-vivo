@@ -56,7 +56,7 @@ router.get('/', function(req, res) {
 router.post('/', function(req, res) {
   var post     = new Post();
   post._user   = req.body._user;
-  if (req.body.text) post.text               = req.body.text;
+  if (req.body.text_msg)post.text_msg         = req.body.text_msg;
   if (req.body.image) post.image             = uploadFile(req.body.image, '.jpg', req.body._user);
   if (req.body.audio) post.audio             = req.body.audio;
   if (req.body.video) post.video             = req.body.has_audio;
@@ -74,7 +74,7 @@ router.post('/', function(req, res) {
 // Update
 router.put('/:post_id', function(req, res) {
   Post.findById(req.params.post_id, function(err, post) {
-    if (req.body.text) post.text    = req.body.text;
+    if (req.body.text_msg) post.text_msg    = req.body.text_msg;
     if (req.body.image) post.image             = uploadFile(req.body.image, '.jpg', req.body._user);
     if (req.body.audio) post.audio             = req.body.audio;
     if (req.body.video) post.video             = req.body.has_audio;

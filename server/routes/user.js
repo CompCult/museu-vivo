@@ -16,6 +16,17 @@ router.get('/', function(req, res) {
   });
 });
 
+//Show
+router.get('/:user_id', function(req, res) {
+  User.findById(req.params.user_id, function(err, usuario) {
+    if (err) {
+      res.status(400).send(err);
+    } else {
+      res.status(200).json(usuario);
+    }
+  });
+});
+
 //Create
 router.post('/register', function(req, res) {
   var user      = new User();

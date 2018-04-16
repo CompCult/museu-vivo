@@ -11,7 +11,7 @@ var Post = new Schema({
   image: String,
   audio: String,
   video: String,
-  text: String,
+  text_msg: String,
   geolocation: { 
     lat: Number, 
     lng: Number
