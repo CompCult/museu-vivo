@@ -58,7 +58,7 @@ router.post('/', function(req, res) {
         if (err) {
           res.status(400).send(err);
         } else {
-          //createTrees(request);
+          createTrees(request);
           res.status(200).send(request);
         }
       });
@@ -100,19 +100,23 @@ router.delete('/:tree_id', function(req, res) {
 });
 
 //Methods
-canUserRequest = function(id, quantity) {
-  var canUserRequest = true;
-  User.findById(id, function(err, user) {
-    if (user && (user.request_limit < quantity)) {
-      canUserRequest = false;
-    }
-  }); 
-
-  return canUserRequest;
-} 
-
 createTrees = function(request) {
-  console.log(request);
+  for (i = 0; i < request.quantity; i++) {
+    var tree              = new Tree();
+    tree._user            = request._user;
+    tree._type            = request._type;
+    tree._request_id      = request._id;
+    tree.name             = request.tree_name;
+    tree.geolocation      = req.body.geolocation;
+
+    tree.save(function(err) {
+      if (err) {
+        res.status(400).send(err);
+      } else {
+        res.status(200).send(tree);
+      }
+    });
+  }
 } 
 
 module.exports = router;
