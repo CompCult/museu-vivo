@@ -58,8 +58,8 @@ router.post('/', function(req, res) {
 router.put('/:tree_id', function(req, res) {
   TreeRequest.findById(req.params.tree_id, function(err, request) {
     if (req.body._user) request._user                   = req.body._user;
-	if (req.body._type) request._type            		= req.body._type;
-	if (req.body.requester_name) request.requester_name = req.body.requester_name;
+	  if (req.body._type) request._type             		= req.body._type;
+	  if (req.body.requester_name) request.requester_name = req.body.requester_name;
   	if (req.body.place) request.place			        = req.body.place;
   	if (req.body.answer_date) request.answer_date       = new Date(req.body.answer_date);
     
@@ -67,7 +67,7 @@ router.put('/:tree_id', function(req, res) {
       if (err) {
         res.status(400).send(err);
       } else {
-        res.status(200).send(request._id);
+        res.status(200).send(request);
       }
     });
   });
