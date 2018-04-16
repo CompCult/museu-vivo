@@ -61,11 +61,13 @@ router.put('/:tree_id', function(req, res) {
     if (req.body.ammount_available) type.ammount_available = req.body.ammount_available;
     if (req.body.photo) type.photo                         = req.body.photo;
     
+    console.log(err);
+
     type.save(function(err) {
       if (err) {
         res.status(400).send(err);
       } else {
-        res.status(200).send(type._id);
+        res.status(200).send(type);
       }
     });
   });
