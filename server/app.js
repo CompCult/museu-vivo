@@ -46,6 +46,9 @@ var groups = require('./routes/group.js');
 var group_member = require('./routes/group_member.js');
 var post = require('./routes/post.js');
 var reaction = require('./routes/reaction.js');
+var tree = require('./routes/tree.js');
+var tree_request = require('./routes/tree_request.js');
+var tree_type = require('./routes/tree_type.js');
 
 // routes
 app.use('/general', general);
@@ -58,12 +61,6 @@ app.use('/groups', groups);
 app.use('/group_members', group_member);
 app.use('/posts', post);
 app.use('/reactions', reaction);
-
-//My Tree Exclusives
-var tree = require('./routes/tree.js');
-var tree_request = require('./routes/tree_request.js');
-var tree_type = require('./routes/tree_type.js');
-
 app.use('/trees', tree);
 app.use('/tree_requests', tree_request);
 app.use('/tree_types', tree_type);
