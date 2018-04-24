@@ -9,7 +9,7 @@ var Tree = require('../models/mytree_exclusives/tree.js');
 var User = require('../models/user.js');
 
 // AWS config
-//  https://769157382962.signin.aws.amazon.com/console  'josejose/'
+// https://769157382962.signin.aws.amazon.com/console  'josejose/'
 var s3 =  new AWS.S3({
   accessKeyId: process.env.S3_KEY,
   secretAccessKey: process.env.S3_SECRET,
@@ -83,6 +83,7 @@ router.post('/', function(req, res) {
   request.requester_name   = req.body.requester_name;
   request.place			       = req.body.place;
   if (req.body.photo) {
+    console.log('has a photo');
     var timeStamp = Math.floor(Date.now());
     var filename = req.body_user + timeStamp + '.jpg';    
     uploadFile(req.body.photo, '.jpg', req.body._user, timeStamp);
