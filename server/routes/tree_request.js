@@ -1,10 +1,46 @@
 var express = require('express');
 var router = express.Router();
+var AWS = require('aws-sdk');
+var fs = require('fs');
 
 
 var TreeRequest = require('../models/mytree_exclusives/tree_request.js');
 var Tree = require('../models/mytree_exclusives/tree.js');
 var User = require('../models/user.js');
+
+// AWS config
+//  https://769157382962.signin.aws.amazon.com/console  'josejose/'
+var s3 =  new AWS.S3({
+  accessKeyId: process.env.S3_KEY,
+  secretAccessKey: process.env.S3_SECRET,
+  region: process.env.S3_REGION
+});
+
+var params = {Bucket: 'compcult'};
+// End AWS
+
+uploadFile = function(file, type, _user){
+  var binaryFile = new Buffer(file, 'binary');
+  console.log("uploadFile");
+
+  var timeStamp = Math.floor(Date.now());
+  var filename = 'minhaarvore/' + _user + type + timeStamp;
+
+  var params = {
+      Bucket: 'compcult',
+      Key: filename,
+      ContentType: type,
+      Body: binaryFile,
+      ACL: 'public-read'
+  };        
+
+  s3.putObject(params, function (resp) {
+    console.log(arguments);
+    console.log('Successfully uploaded package.');
+  });
+
+  return 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
+}
 
 
 //Index
@@ -50,6 +86,12 @@ router.post('/', function(req, res) {
   request.quantity         = req.body.quantity;
   request.requester_name   = req.body.requester_name;
   request.place			       = req.body.place;
+  if (req.body.photo) {
+    request.photo    = req.body.photo;
+    console.log(req.body.photo);
+    uploadFile(req.body.photo, '.jpg', req.body._user);
+  }
+  request.sidewalk_size    = req.body.sidewalk_size;
   if(req.body.answer_date) request.answer_date = new Date(req.body.answer_date);
 
   User.findById(req.body._user, function(err, user) {

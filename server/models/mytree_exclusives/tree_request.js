@@ -17,6 +17,8 @@ var TreeRequest = new Schema({
   quantity: Number,
   requester_name: String,
   place: String,
+  photo: String,
+  sidewalk_size: Number,
   request_date: {
     type: Date,
     default: Date.now
