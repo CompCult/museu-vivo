@@ -19,12 +19,11 @@ var s3 =  new AWS.S3({
 var params = {Bucket: 'compcult'};
 // End AWS
 
-uploadFile = function(file, type, _user){
+uploadFile = function(file, type, _user, stamp){
   var binaryFile = new Buffer(file, 'binary');
   console.log("uploadFile");
 
-  var timeStamp = Math.floor(Date.now());
-  var filename = 'minhaarvore/' + _user + type + timeStamp;
+  var filename = _user + stamp + type;
 
   var params = {
       Bucket: 'compcult',
@@ -35,11 +34,8 @@ uploadFile = function(file, type, _user){
   };        
 
   s3.putObject(params, function (resp) {
-    console.log(arguments);
     console.log('Successfully uploaded package.');
   });
-
-  return 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
 }
 
 
@@ -87,9 +83,11 @@ router.post('/', function(req, res) {
   request.requester_name   = req.body.requester_name;
   request.place			       = req.body.place;
   if (req.body.photo) {
-    request.photo    = req.body.photo;
-    console.log(req.body.photo);
-    uploadFile(req.body.photo, '.jpg', req.body._user);
+    var timeStamp = Math.floor(Date.now());
+    var filename = req.body_user + timeStamp + '.jpg';    
+    uploadFile(req.body.photo, '.jpg', req.body._user, timeStamp);
+
+    request.photo = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
   }
   request.sidewalk_size    = req.body.sidewalk_size;
   if(req.body.answer_date) request.answer_date = new Date(req.body.answer_date);
