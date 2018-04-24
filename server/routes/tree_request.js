@@ -23,7 +23,7 @@ uploadFile = function(file, type, _user, stamp){
   var binaryFile = new Buffer(file, 'binary');
   console.log("uploadFile");
 
-  var filename = _user + stamp + type;
+  var filename = 'minhaarvore/' + _user + stamp + type;
 
   var params = {
       Bucket: 'compcult',
