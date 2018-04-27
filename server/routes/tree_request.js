@@ -73,15 +73,25 @@ router.get('/fields', function(req, res) {
 
 //Create
 router.post('/', function(req, res) {
-  var request              = new TreeRequest();
-  request._user            = req.body._user;
-  request._type            = req.body._type;
-  request.tree_name        = req.body.tree_name;
-  request.location_lat     = req.body.location_lat;
-  request.location_lng     = req.body.location_lng;
-  request.quantity         = req.body.quantity;
-  request.requester_name   = req.body.requester_name;
-  request.place			       = req.body.place;
+  var request             = new TreeRequest();
+  request._user           = req.body._user;
+  request._type           = req.body._type;
+  request.tree_name       = req.body.tree_name;
+  request.location_lat    = req.body.location_lat;
+  request.location_lng    = req.body.location_lng;
+  request.quantity        = req.body.quantity;
+  request.requester_name  = req.body.requester_name;
+  request.place			      = req.body.place;
+  request.status          = req.body.status;
+  request.sidewalk_size   = req.body.sidewalk_size;
+  request.street          = req.body.street;
+  request.complement      = req.body.complement;
+  request.number          = req.body.number;
+  request.neighborhood    = req.body.neighborhood;
+  request.city            = req.body.city;
+  request.state           = req.body.state;
+  request.zipcode         = req.body.zipcode;
+  request.updated_at      = Date().now();
   if (req.body.photo) {
     console.log('has a photo');
     var timeStamp = Math.floor(Date.now());
@@ -90,8 +100,6 @@ router.post('/', function(req, res) {
 
     request.photo = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
   }
-  request.sidewalk_size    = req.body.sidewalk_size;
-  if(req.body.answer_date) request.answer_date = new Date(req.body.answer_date);
 
   User.findById(req.body._user, function(err, user) {
     if (user && (user.request_limit < req.body.quantity)) {
@@ -119,8 +127,27 @@ router.put('/:tree_id', function(req, res) {
     if (req.body.location_lng) request.location_lng     = req.body.location_lng;
     if (req.body.quantity) request.quantity             = req.body.quantity;
 	  if (req.body.requester_name) request.requester_name = req.body.requester_name;
-  	if (req.body.place) request.place			              = req.body.place;
-  	if (req.body.answer_date) request.answer_date       = new Date(req.body.answer_date);
+    if (req.body.place) request.place                   = req.body.place;
+    if (req.body.status) {
+      request.status      = req.body.status;
+      request.updated_at  = Date().now();
+    }
+    if (req.body.photo) {
+      console.log('has a photo');
+      var timeStamp = Math.floor(Date.now());
+      var filename = req.body_user + timeStamp + '.png';    
+      uploadFile(req.body.photo, '.png', req.body._user, timeStamp);
+
+      request.photo = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
+    }
+    if (req.body.sidewalk_size) request.sidewalk_size   = req.body.sidewalk_size;
+    if (req.body.street) request.street = req.body.street;
+    if (req.body.complement) request.complement = req.body.complement;
+    if (req.body.number) request.number = req.body.number;
+    if (req.body.neighborhood) request.neighborhood = req.body.neighborhood;
+    if (req.body.city) request.city = req.body.city;
+    if (req.body.state) request.state = req.body.state;
+    if (req.body.zipcode) request.zipcode = req.body.zipcode;
     
     request.save(function(err) {
       if (err) {

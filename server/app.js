@@ -50,6 +50,7 @@ var tree = require('./routes/tree.js');
 var tree_request = require('./routes/tree_request.js');
 var tree_type = require('./routes/tree_type.js');
 var appointment = require('./routes/appointment.js');
+var appointment_request = require('./routes/appointment_request.js');
 
 // routes
 app.use('/general', general);
@@ -66,6 +67,7 @@ app.use('/trees', tree);
 app.use('/tree_requests', tree_request);
 app.use('/tree_types', tree_type);
 app.use('/appointment', appointment);
+app.use('/appointment_requests', appointment_request);
 //-------------------------------------------------------------------------
 
 // error hndlers

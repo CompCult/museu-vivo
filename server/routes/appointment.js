@@ -33,7 +33,8 @@ router.post('/', function(req, res) {
   appointment.description = req.body.description;
   appointment.place       = req.body.place;
   appointment.type        = req.body.type;
-  appointment.date        = new Date(req.body.date);
+  appointment.start_date  = new Date(req.body.start_date);
+  appointment.end_date    = new Date(req.body.end_date);
 
   appointment.save(function(err) {
     if (err) {
@@ -51,7 +52,8 @@ router.put('/:appointment_id', function(req, res) {
     if (req.body.description) appointment.description = req.body.description;
     if (req.body.place) appointment.place             = req.body.place;
     if (req.body.type) appointment.type               = req.body.type;
-    if (req.body.date) appointment.date               = new Date(req.body.date);
+    if (req.body.start_date) appointment.start_date   = new Date(req.body.start_date);
+    if (req.body.end_date) appointment.end_date       = new Date(req.body.end_date);
     
     appointment.save(function(err) {
       if (err) {

@@ -6,12 +6,14 @@ var autoInc   = require('mongoose-sequence')(mongoose);
 var User = new Schema({
   _id: Number,
   name: String,
+  picture: String,
   email: {
   	type: String,
   	lowercase: true,
     unique: true
   },
-  picture: String,
+  type: String,
+  institution: String,
   password: String,
   birth: Date,
   sex: String,
