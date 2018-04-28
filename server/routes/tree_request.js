@@ -98,8 +98,8 @@ router.post('/', function(req, res) {
     var date = new Date();
     var timeStamp = date.toLocaleString();
     console.log(timeStamp);
-    var filename = req.body._user.toString() + timeStamp + '.png';  
-    uploadFile(req.body.photo, '.png', req.body._user.toString(), timeStamp);
+    var filename = req.body._user.toString() + timeStamp + '.jpg';  
+    uploadFile(req.body.photo, '.jpg', req.body._user.toString(), timeStamp);
 
     console.log(filename);
     request.photo = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
