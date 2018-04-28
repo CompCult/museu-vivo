@@ -19,17 +19,18 @@ var s3 =  new AWS.S3({
 var params = {Bucket: 'compcult'};
 // End AWS
 
-uploadFile = function(file, type, _user, stamp){
-  var imageUri = 'data:image/png;base64,' + file;
-  var filename = 'minhaarvore/' + _user + stamp + type;
+uploadFile = function(file, _user, stamp){
+  console.log(file);
+  var buffer = new Buffer(file, 'base64');
+  var filename = 'minhaarvore/' + _user + stamp;
 
   var params = {
       Bucket: 'compcult',
       Key: filename,
+      Body: buffer,
+      ACL: 'public-read',
       ContentEncoding: 'base64',
-      ContentType: type,
-      Body: imageUri,
-      ACL: 'public-read'
+      ContentType: 'image/jpeg',
   };        
 
   s3.putObject(params, function (resp) {
@@ -96,7 +97,7 @@ router.post('/', function(req, res) {
     var date = new Date();
     var timeStamp = date.toLocaleString();
     var filename = req.body._user.toString() + timeStamp + '.jpg';  
-    uploadFile(req.body.photo, '.jpg', req.body._user.toString(), timeStamp);
+    uploadFile(req.body.photo, req.body._user.toString(), timeStamp);
     request.photo = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
   }
   if(req.body.sidewalk_size) request.sidewalk_size    = req.body.sidewalk_size;
@@ -137,8 +138,8 @@ router.put('/:tree_id', function(req, res) {
       console.log('has a photo');
       var date = new Date();
       var timeStamp = date.toLocaleString();
-      var filename = req.body._user.toString() + timeStamp + '.png';    
-      uploadFile(req.body.photo, '.png', req.body._user.toString(), timeStamp);
+      var filename = req.body._user.toString() + timeStamp + '.jpg';    
+      uploadFile(req.body.photo, req.body._user.toString(), timeStamp);
 
       request.photo = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
     }
