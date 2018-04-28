@@ -22,7 +22,7 @@ var params = {Bucket: 'compcult'};
 uploadFile = function(file, _user, stamp){
   console.log(file);
   var buffer = new Buffer(file, 'base64');
-  var filename = 'minhaarvore/' + _user + stamp;
+  var filename = 'minhaarvore/' + _user + stamp + '.jpg';
 
   var params = {
       Bucket: 'compcult',
