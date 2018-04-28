@@ -8,7 +8,8 @@ var Appointment = new Schema({
   description: String,
   place: String,
   type: String,
-  date: Date
+  start_date: Date,
+  end_date: Date
 });
 
 Appointment.plugin(autoInc, {id: "appointment_id"});

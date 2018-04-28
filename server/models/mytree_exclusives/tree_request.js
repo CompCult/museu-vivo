@@ -18,7 +18,14 @@ var TreeRequest = new Schema({
   requester_name: String,
   place: String,
   photo: String,
-  sidewalk_size: String,
+  sidewalk_size: Number,
+  street: String,
+  complement: String,
+  number: Number,
+  neighborood: String,
+  city: String,
+  state: String,
+  zipcode: String,
   request_date: {
     type: Date,
     default: Date.now

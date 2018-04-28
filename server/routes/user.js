@@ -60,6 +60,8 @@ router.post('/update/:user_id', function(req, res) {
   User.findById(req.params.user_id, function(err, user) {
     if (req.body.name) user.name = req.body.name;
     if (req.body.email) user.email = req.body.email;
+    if (req.body.type) user.type = req.body.type;
+    if (req.body.institution) user.institution = req.body.institution;
     if (req.body.birth) user.birth = new Date(req.body.birth);
     if (req.body.sex) user.sex = req.body.sex;
     if (req.body.phone) user.phone = req.body.phone;
