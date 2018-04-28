@@ -5,6 +5,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.1.6",
+    "ejs": "2.x",
     "bcrypt-nodejs": "0.0.3",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.15.0",

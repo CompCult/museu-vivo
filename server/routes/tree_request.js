@@ -84,13 +84,14 @@ router.post('/', function(req, res) {
   request.place			       = req.body.place;
   if (req.body.photo) {
     console.log('has a photo');
-    var timeStamp = Math.floor(Date.now());
+    var date = new Date();
+    var timeStamp = Math.floor(date.now());
     var filename = req.body_user + timeStamp + '.png';    
     uploadFile(req.body.photo, '.png', req.body._user, timeStamp);
 
     request.photo = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
   }
-  request.sidewalk_size    = req.body.sidewalk_size;
+  if(req.body.sidewalk_size) request.sidewalk_size    = req.body.sidewalk_size;
   if(req.body.answer_date) request.answer_date = new Date(req.body.answer_date);
 
   User.findById(req.body._user, function(err, user) {
