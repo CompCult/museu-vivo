@@ -20,16 +20,15 @@ var params = {Bucket: 'compcult'};
 // End AWS
 
 uploadFile = function(file, type, _user, stamp){
-  var binaryFile = new Buffer(file, 'binary');
-  console.log(file);
-
+  var imageUri = 'data:image/png;base64,' + file;
   var filename = 'minhaarvore/' + _user + stamp + type;
 
   var params = {
       Bucket: 'compcult',
       Key: filename,
+      ContentEncoding: 'base64',
       ContentType: type,
-      Body: binaryFile,
+      Body: imageUri,
       ACL: 'public-read'
   };        
 
@@ -94,14 +93,10 @@ router.post('/', function(req, res) {
   if (req.body.state) request.state = req.body.state;
   if (req.body.zipcode) request.zipcode = req.body.zipcode;
   if (req.body.photo) {
-    console.log('has a photo');
     var date = new Date();
     var timeStamp = date.toLocaleString();
-    console.log(timeStamp);
     var filename = req.body._user.toString() + timeStamp + '.jpg';  
     uploadFile(req.body.photo, '.jpg', req.body._user.toString(), timeStamp);
-
-    console.log(filename);
     request.photo = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
   }
   if(req.body.sidewalk_size) request.sidewalk_size    = req.body.sidewalk_size;
