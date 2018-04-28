@@ -21,7 +21,6 @@ var params = {Bucket: 'compcult'};
 
 uploadFile = function(file, type, _user, stamp){
   var binaryFile = new Buffer(file, 'binary');
-  console.log("uploadFile");
 
   var filename = 'minhaarvore/' + _user + stamp + type;
 
@@ -74,6 +73,7 @@ router.get('/fields', function(req, res) {
 //Create
 router.post('/', function(req, res) {
   var request             = new TreeRequest();
+
   request._user           = req.body._user;
   request._type           = req.body._type;
   request.tree_name       = req.body.tree_name;
@@ -84,7 +84,7 @@ router.post('/', function(req, res) {
   request.place			      = req.body.place;
   request.status          = 'Pendente';
   request.updated_at      = new Date();
-  if(req.body.sidewalk_size) request.sidewalk_size   = req.body.sidewalk_size;
+  if (req.body.sidewalk_size) request.sidewalk_size   = req.body.sidewalk_size;
   if (req.body.street) request.street = req.body.street;
   if (req.body.complement) request.complement = req.body.complement;
   if (req.body.number) request.number = req.body.number;
@@ -95,10 +95,12 @@ router.post('/', function(req, res) {
   if (req.body.photo) {
     console.log('has a photo');
     var date = new Date();
-    var timeStamp = Math.floor(date.toLocaleString());
-    var filename = req.body_user + timeStamp + '.png';    
+    var timeStamp = date.toLocaleString();
+    console.log(timeStamp);
+    var filename = req.body._user.toString() + timeStamp + '.png';  
     uploadFile(req.body.photo, '.png', req.body._user, timeStamp);
 
+    console.log(filename);
     request.photo = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
   }
   if(req.body.sidewalk_size) request.sidewalk_size    = req.body.sidewalk_size;
@@ -138,8 +140,8 @@ router.put('/:tree_id', function(req, res) {
     if (req.body.photo) {
       console.log('has a photo');
       var date = new Date();
-      var timeStamp = Math.floor(date.toLocaleString());
-      var filename = req.body_user + timeStamp + '.png';    
+      var timeStamp = date.toLocaleString();
+      var filename = req.body._user.toString() + timeStamp + '.png';    
       uploadFile(req.body.photo, '.png', req.body._user, timeStamp);
 
       request.photo = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
@@ -189,7 +191,7 @@ createTrees = function(request) {
       if (err) {
         console.log('algo deu ruim');
       } else {
-        console.log('done');
+        console.log('Arvores criadas!');
       }
     });
   }
