@@ -21,6 +21,7 @@ var params = {Bucket: 'compcult'};
 
 uploadFile = function(file, type, _user, stamp){
   var binaryFile = new Buffer(file, 'binary');
+  console.log(file);
 
   var filename = 'minhaarvore/' + _user + stamp + type;
 
@@ -98,7 +99,7 @@ router.post('/', function(req, res) {
     var timeStamp = date.toLocaleString();
     console.log(timeStamp);
     var filename = req.body._user.toString() + timeStamp + '.png';  
-    uploadFile(req.body.photo, '.png', req.body._user, timeStamp);
+    uploadFile(req.body.photo, '.png', req.body._user.toString(), timeStamp);
 
     console.log(filename);
     request.photo = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
@@ -142,7 +143,7 @@ router.put('/:tree_id', function(req, res) {
       var date = new Date();
       var timeStamp = date.toLocaleString();
       var filename = req.body._user.toString() + timeStamp + '.png';    
-      uploadFile(req.body.photo, '.png', req.body._user, timeStamp);
+      uploadFile(req.body.photo, '.png', req.body._user.toString(), timeStamp);
 
       request.photo = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
     }
