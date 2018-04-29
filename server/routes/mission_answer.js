@@ -7,37 +7,30 @@ var fs = require('fs');
 var MissionAnswer = require('../models/mission_answer.js');
 
 // AWS config
-//  https://769157382962.signin.aws.amazon.com/console  'josejose/'
+// https://769157382962.signin.aws.amazon.com/console  'josejose/'
 var s3 =  new AWS.S3({
   accessKeyId: process.env.S3_KEY,
   secretAccessKey: process.env.S3_SECRET,
   region: process.env.S3_REGION
 });
 
-var params = {Bucket: 'compcult'};
-// End AWS
-
-uploadFile = function(file, type, _user){
-  var binaryFile = new Buffer(file, 'binary');
-  console.log("uploadFile");
-
-  var timeStamp = Math.floor(Date.now());
-  var filename = 'josejose/' + _user + type + timeStamp;
+uploadFile = function(file, _user, stamp){
+  console.log(file);
+  var buffer = new Buffer(file, 'base64');
+  var filename = 'minhaarvore/' + _user + stamp + '.jpg';
 
   var params = {
       Bucket: 'compcult',
       Key: filename,
-      ContentType: type,
-      Body: binaryFile,
-      ACL: 'public-read'
+      Body: buffer,
+      ACL: 'public-read',
+      ContentEncoding: 'base64',
+      ContentType: 'image/jpeg',
   };        
 
   s3.putObject(params, function (resp) {
-    console.log(arguments);
     console.log('Successfully uploaded package.');
   });
-
-  //return 'https://s3.amazonaws.com/compcult/josejose/' + filename;
 }
 
 //Index
@@ -56,15 +49,25 @@ router.post('/', function(req, res) {
   var missionAnswer         = new MissionAnswer();
   missionAnswer._user       = req.body._user;
   missionAnswer._mission    = req.body._mission;
-  missionAnswer.status      = "pendente";
+  missionAnswer.status      = "Pendente";
   if (req.body._group) missionAnswer._group      = req.body._group;
   if (req.body.image) {
-    missionAnswer.image     = req.body.image;
-    console.log(req.body.image);
-    uploadFile(req.body.image, '.jpg', req.body._user);
-  }
-  if (req.body.audio) missionAnswer.audio     = uploadFile(req.body.audio, '.mp3', req.body._user);
-  if (req.body.video) missionAnswer.video     = uploadFile(req.body.video, '.mp4', req.body._user);
+    var date = new Date();
+    var timeStamp = date.toLocaleString(); 
+    uploadFile('image', req.body.image, req.body._user.toString(), timeStamp);
+
+    var filename = req.body._user.toString() + timeStamp + '.jpg'; 
+    request.image = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
+  };
+  if (req.body.audio) {
+    var date = new Date();
+    var timeStamp = date.toLocaleString(); 
+    uploadFile('audio', req.body.audio, req.body._user.toString(), timeStamp);
+
+    var filename = req.body._user.toString() + timeStamp + '.wav'; 
+    request.audio = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
+  };
+  if (req.body.video) missionAnswer.video     = req.body.video;
   if (req.body.text) missionAnswer.text               = req.body.text;
   if (req.body.location_lat) missionAnswer.location_lat = req.body.location_lat;
   if (req.body.location_lng) missionAnswer.location_lng = req.body.location_lng;
@@ -84,8 +87,22 @@ router.put('/:mission_id', function(req, res) {
     if (req.body._user) missionAnswer._user             = req.body._user;
     if (req.body._mission) missionAnswer._mission       = req.body._mission;
     if (req.body._group) missionAnswer._group           = req.body._group;
-    if (req.body.image) missionAnswer.image             = req.body.image;
-    if (req.body.audio) missionAnswer.audio             = req.body.audio;
+    if (req.body.image) {
+      var date = new Date();
+      var timeStamp = date.toLocaleString(); 
+      uploadFile('image', req.body.image, req.body._user.toString(), timeStamp);
+
+      var filename = req.body._user.toString() + timeStamp + '.jpg'; 
+      request.image = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
+    };
+    if (req.body.audio) {
+      var date = new Date();
+      var timeStamp = date.toLocaleString(); 
+      uploadFile('audio', req.body.audio, req.body._user.toString(), timeStamp);
+
+      var filename = req.body._user.toString() + timeStamp + '.wav'; 
+      request.audio = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
+    };
     if (req.body.video) missionAnswer.video             = req.body.video;
     if (req.body.text) missionAnswer.text               = req.body.text;
     if (req.body.location_lat) missionAnswer.location_lat = req.body.location_lat;

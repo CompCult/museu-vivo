@@ -16,9 +16,6 @@ var s3 =  new AWS.S3({
   region: process.env.S3_REGION
 });
 
-var params = {Bucket: 'compcult'};
-// End AWS
-
 uploadFile = function(file, _user, stamp){
   console.log(file);
   var buffer = new Buffer(file, 'base64');
@@ -95,9 +92,10 @@ router.post('/', function(req, res) {
   if (req.body.zipcode) request.zipcode = req.body.zipcode;
   if (req.body.photo) {
     var date = new Date();
-    var timeStamp = date.toLocaleString();
-    var filename = req.body._user.toString() + timeStamp + '.jpg';  
+    var timeStamp = date.toLocaleString(); 
     uploadFile(req.body.photo, req.body._user.toString(), timeStamp);
+
+    var filename = req.body._user.toString() + timeStamp + '.jpg'; 
     request.photo = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
   }
   if(req.body.sidewalk_size) request.sidewalk_size    = req.body.sidewalk_size;

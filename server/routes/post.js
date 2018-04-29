@@ -6,38 +6,30 @@ var fs = require('fs');
 
 var Post = require('../models/post.js');
 
-// AWS config
-// https://769157382962.signin.aws.amazon.com/console  'timeline/'
+// AWS
 var s3 =  new AWS.S3({
   accessKeyId: process.env.S3_KEY,
   secretAccessKey: process.env.S3_SECRET,
   region: process.env.S3_REGION
 });
 
-var params = {Bucket: 'compcult'};
-// End AWS
-
-uploadFile = function(file, type, _user){
-  var binaryFile = new Buffer(file, 'binary');
-  console.log("uploadFile");
-
-  var timeStamp = Math.floor(Date.now());
-  var filename = 'timeline/' + _user + type + timeStamp;
+uploadFile = function(file, _user, stamp){
+  console.log(file);
+  var buffer = new Buffer(file, 'base64');
+  var filename = 'minhaarvore/' + _user + stamp + '.jpg';
 
   var params = {
       Bucket: 'compcult',
       Key: filename,
-      ContentType: type,
-      Body: binaryFile,
-      ACL: 'public-read'
+      Body: buffer,
+      ACL: 'public-read',
+      ContentEncoding: 'base64',
+      ContentType: 'image/jpeg',
   };        
 
   s3.putObject(params, function (resp) {
-    console.log(arguments);
     console.log('Successfully uploaded package.');
   });
-
-  return 'https://s3.amazonaws.com/compcult/timeline/' + filename;
 }
 
 //Index
@@ -57,7 +49,14 @@ router.post('/', function(req, res) {
   var post     = new Post();
   post._user   = req.body._user;
   if (req.body.text_msg) post.text_msg       = req.body.text_msg;
-  if (req.body.image) post.image             = uploadFile(req.body.image, '.jpg', req.body._user);
+  if (req.body.image) {
+    var date = new Date();
+    var timeStamp = date.toLocaleString(); 
+    uploadFile(req.body.image, req.body._user.toString(), timeStamp);
+
+    var filename = req.body._user.toString() + timeStamp + '.jpg'; 
+    request.image = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
+  }
   if (req.body.audio) post.audio             = req.body.audio;
   if (req.body.video) post.video             = req.body.video;
   if (req.body.location_lat) post.location_lat = req.body.location_lat;

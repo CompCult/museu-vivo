@@ -1,9 +1,35 @@
 var express = require('express');
 var router = express.Router();
 var bcrypt  = require('bcryptjs');
-
+var AWS = require('aws-sdk');
+var fs = require('fs');
 
 var User = require('../models/user.js');
+
+var s3 =  new AWS.S3({
+  accessKeyId: process.env.S3_KEY,
+  secretAccessKey: process.env.S3_SECRET,
+  region: process.env.S3_REGION
+});
+
+uploadFile = function(file, _user, stamp){
+  console.log(file);
+  var buffer = new Buffer(file, 'base64');
+  var filename = 'minhaarvore/' + _user + stamp + '.jpg';
+
+  var params = {
+      Bucket: 'compcult',
+      Key: filename,
+      Body: buffer,
+      ACL: 'public-read',
+      ContentEncoding: 'base64',
+      ContentType: 'image/jpeg',
+  };        
+
+  s3.putObject(params, function (resp) {
+    console.log('Successfully uploaded package.');
+  });
+}
 
 //Index
 router.get('/', function(req, res) {
@@ -76,6 +102,14 @@ router.post('/update/:user_id', function(req, res) {
     if (req.body.sec_points) user.sec_points = req.body.sec_points;
     if (req.body.request_limit) user.request_limit = req.body.request_limit;
     if (req.body.banned_until) user.banned_until = new Date(req.body.banned_until);
+    if (req.body.picture) {
+      var date = new Date();
+      var timeStamp = date.toLocaleString();
+      var filename = req.params.user_id.toString() + timeStamp + '.jpg'; 
+
+      uploadFile(req.body.picture, req.params.user_id.toString(), timeStamp);
+      user.picture = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
+    };
 
 
     if (req.body.password) {
