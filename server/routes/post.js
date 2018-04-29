@@ -55,7 +55,7 @@ router.post('/', function(req, res) {
     uploadFile(req.body.image, req.body._user.toString(), timeStamp);
 
     var filename = req.body._user.toString() + timeStamp + '.jpg'; 
-    request.image = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
+    post.image = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
   }
   if (req.body.audio) post.audio             = req.body.audio;
   if (req.body.video) post.video             = req.body.video;
@@ -75,7 +75,14 @@ router.post('/', function(req, res) {
 router.put('/:post_id', function(req, res) {
   Post.findById(req.params.post_id, function(err, post) {
     if (req.body.text_msg) post.text_msg       = req.body.text_msg;
-    if (req.body.image) post.image             = uploadFile(req.body.image, '.jpg', req.body._user);
+    if (req.body.image) {
+      var date = new Date();
+      var timeStamp = date.toLocaleString(); 
+      uploadFile(req.body.image, req.body._user.toString(), timeStamp);
+
+      var filename = req.body._user.toString() + timeStamp + '.jpg'; 
+      post.image = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
+    }
     if (req.body.audio) post.audio             = req.body.audio;
     if (req.body.video) post.video             = req.body.video;
     if (req.body.location_lat) post.location_lat = req.body.location_lat;
