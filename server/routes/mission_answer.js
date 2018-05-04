@@ -74,10 +74,10 @@ router.put('/:mission_id', function(req, res) {
       var filename = req.body._user.toString() + 'audio' + timeStamp + '.wav'; 
       missionAnswer.audio = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
     };
-    // if (req.body.video) missionAnswer.video               = req.body.video;
-    // if (req.body.text) missionAnswer.text                 = req.body.text;
-    // if (req.body.location_lat) missionAnswer.location_lat = req.body.location_lat;
-    // if (req.body.location_lng) missionAnswer.location_lng = req.body.location_lng;
+    //if (req.body.video) missionAnswer.video               = req.body.video;
+    if (req.body.text) missionAnswer.text                 = req.body.text;
+    if (req.body.location_lat) missionAnswer.location_lat = req.body.location_lat;
+    if (req.body.location_lng) missionAnswer.location_lng = req.body.location_lng;
     
     missionAnswer.save(function(err) {
       if (err) {
