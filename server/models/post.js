@@ -8,7 +8,7 @@ var Post = new Schema({
     type: Number, 
     ref: './user.js' 
   },
-  image: String,
+  picture: String,
   audio: String,
   video: String,
   text_msg: String,

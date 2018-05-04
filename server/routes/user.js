@@ -1,35 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var bcrypt  = require('bcryptjs');
-var AWS = require('aws-sdk');
-var fs = require('fs');
 
 var User = require('../models/user.js');
-
-var s3 =  new AWS.S3({
-  accessKeyId: process.env.S3_KEY,
-  secretAccessKey: process.env.S3_SECRET,
-  region: process.env.S3_REGION
-});
-
-uploadFile = function(file, _user, stamp){
-  console.log(file);
-  var buffer = new Buffer(file, 'base64');
-  var filename = 'minhaarvore/' + _user + stamp + '.jpg';
-
-  var params = {
-      Bucket: 'compcult',
-      Key: filename,
-      Body: buffer,
-      ACL: 'public-read',
-      ContentEncoding: 'base64',
-      ContentType: 'image/jpeg',
-  };        
-
-  s3.putObject(params, function (resp) {
-    console.log('Successfully uploaded package.');
-  });
-}
+var Uploads = require('../upload.js');
 
 //Index
 router.get('/', function(req, res) {
@@ -84,6 +58,10 @@ router.post('/register', function(req, res) {
 // Update
 router.post('/update/:user_id', function(req, res) {
   User.findById(req.params.user_id, function(err, user) {
+    if (!user) {
+      res.status(400).send('Usuário não encontrado!');
+    }
+
     if (req.body.name) user.name = req.body.name;
     if (req.body.email) user.email = req.body.email;
     if (req.body.type) user.type = req.body.type;
@@ -105,9 +83,9 @@ router.post('/update/:user_id', function(req, res) {
     if (req.body.picture) {
       var date = new Date();
       var timeStamp = date.toLocaleString();
-      var filename = req.params.user_id.toString() + timeStamp + '.jpg'; 
+      var filename = req.params.user_id.toString() + timeStamp + '.jpg';
 
-      uploadFile(req.body.picture, req.params.user_id.toString(), timeStamp);
+      Uploads.uploadFile(req.body.picture, req.params.user_id.toString(), timeStamp);
       user.picture = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
     };
 

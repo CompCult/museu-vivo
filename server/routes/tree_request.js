@@ -1,40 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var AWS = require('aws-sdk');
-var fs = require('fs');
 
-
+var Uploads = require('../upload.js');
 var TreeRequest = require('../models/mytree_exclusives/tree_request.js');
 var Tree = require('../models/mytree_exclusives/tree.js');
 var User = require('../models/user.js');
-
-// AWS config
-// https://769157382962.signin.aws.amazon.com/console  'josejose/'
-var s3 =  new AWS.S3({
-  accessKeyId: process.env.S3_KEY,
-  secretAccessKey: process.env.S3_SECRET,
-  region: process.env.S3_REGION
-});
-
-uploadFile = function(file, _user, stamp){
-  console.log(file);
-  var buffer = new Buffer(file, 'base64');
-  var filename = 'minhaarvore/' + _user + stamp + '.jpg';
-
-  var params = {
-      Bucket: 'compcult',
-      Key: filename,
-      Body: buffer,
-      ACL: 'public-read',
-      ContentEncoding: 'base64',
-      ContentType: 'image/jpeg',
-  };        
-
-  s3.putObject(params, function (resp) {
-    console.log('Successfully uploaded package.');
-  });
-}
-
 
 //Index
 router.get('/', function(req, res) {
@@ -93,7 +63,7 @@ router.post('/', function(req, res) {
   if (req.body.photo) {
     var date = new Date();
     var timeStamp = date.toLocaleString(); 
-    uploadFile(req.body.photo, req.body._user.toString(), timeStamp);
+    Uploads.uploadTreePicture(req.body.photo, req.body._user.toString(), timeStamp);
 
     var filename = req.body._user.toString() + timeStamp + '.jpg'; 
     request.photo = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
@@ -137,7 +107,7 @@ router.put('/:tree_id', function(req, res) {
       var date = new Date();
       var timeStamp = date.toLocaleString();
       var filename = req.body._user.toString() + timeStamp + '.jpg';    
-      uploadFile(req.body.photo, req.body._user.toString(), timeStamp);
+      Uploads.uploadTreePicture(req.body.photo, req.body._user.toString(), timeStamp);
 
       request.photo = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
     }

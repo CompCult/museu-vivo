@@ -1,36 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var bcrypt  = require('bcryptjs');
-var AWS = require('aws-sdk');
-var fs = require('fs');
 
 var Post = require('../models/post.js');
-
-// AWS
-var s3 =  new AWS.S3({
-  accessKeyId: process.env.S3_KEY,
-  secretAccessKey: process.env.S3_SECRET,
-  region: process.env.S3_REGION
-});
-
-uploadFile = function(file, _user, stamp){
-  console.log(file);
-  var buffer = new Buffer(file, 'base64');
-  var filename = 'minhaarvore/' + _user + stamp + '.jpg';
-
-  var params = {
-      Bucket: 'compcult',
-      Key: filename,
-      Body: buffer,
-      ACL: 'public-read',
-      ContentEncoding: 'base64',
-      ContentType: 'image/jpeg',
-  };        
-
-  s3.putObject(params, function (resp) {
-    console.log('Successfully uploaded package.');
-  });
-}
+var Uploads = require('../upload.js');
 
 //Index
 router.get('/', function(req, res) {
@@ -49,13 +21,13 @@ router.post('/', function(req, res) {
   var post     = new Post();
   post._user   = req.body._user;
   if (req.body.text_msg) post.text_msg       = req.body.text_msg;
-  if (req.body.image) {
+  if (req.body.picture) {
     var date = new Date();
     var timeStamp = date.toLocaleString(); 
-    uploadFile(req.body.image, req.body._user.toString(), timeStamp);
+    Uploads.uploadFile(req.body.picture, req.body._user.toString(), timeStamp);
 
     var filename = req.body._user.toString() + timeStamp + '.jpg'; 
-    post.image = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
+    post.picture = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
   }
   if (req.body.audio) post.audio             = req.body.audio;
   if (req.body.video) post.video             = req.body.video;
@@ -75,13 +47,13 @@ router.post('/', function(req, res) {
 router.put('/:post_id', function(req, res) {
   Post.findById(req.params.post_id, function(err, post) {
     if (req.body.text_msg) post.text_msg       = req.body.text_msg;
-    if (req.body.image) {
+    if (req.body.picture) {
       var date = new Date();
       var timeStamp = date.toLocaleString(); 
-      uploadFile(req.body.image, req.body._user.toString(), timeStamp);
+      Uploads.uploadFile(req.body.picture, req.body._user.toString(), timeStamp);
 
       var filename = req.body._user.toString() + timeStamp + '.jpg'; 
-      post.image = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
+      post.picture = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
     }
     if (req.body.audio) post.audio             = req.body.audio;
     if (req.body.video) post.video             = req.body.video;
