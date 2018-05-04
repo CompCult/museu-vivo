@@ -63,7 +63,7 @@ router.post('/', function(req, res) {
   if (req.body.photo) {
     var date = new Date();
     var timeStamp = date.toLocaleString(); 
-    Uploads.uploadTreePicture(req.body.photo, req.body._user.toString(), timeStamp);
+    Uploads.uploadFile(req.body.photo, req.body._user.toString(), timeStamp);
 
     var filename = req.body._user.toString() + timeStamp + '.jpg'; 
     request.photo = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
@@ -107,7 +107,7 @@ router.put('/:tree_id', function(req, res) {
       var date = new Date();
       var timeStamp = date.toLocaleString();
       var filename = req.body._user.toString() + timeStamp + '.jpg';    
-      Uploads.uploadTreePicture(req.body.photo, req.body._user.toString(), timeStamp);
+      Uploads.uploadFile(req.body.photo, req.body._user.toString(), timeStamp);
 
       request.photo = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
     }
