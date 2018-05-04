@@ -37,7 +37,7 @@ router.post('/', function(req, res) {
   if (req.body.audio) {
     var date = new Date();
     var timeStamp = date.toLocaleString(); 
-    uploadAudio(req.body.audio, req.body._user.toString(), timeStamp);
+    Uploads.uploadAudio(req.body.audio, req.body._user.toString(), timeStamp);
 
     var filename = req.body._user.toString() + 'audio' + timeStamp + '.wav'; 
     missionAnswer.audio = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
@@ -69,7 +69,7 @@ router.put('/:mission_id', function(req, res) {
     if (req.body.audio) {
       var date = new Date();
       var timeStamp = date.toLocaleString(); 
-      uploadAudio(req.body.audio, req.body._user.toString(), timeStamp);
+      Uploads.uploadAudio(req.body.audio, req.body._user.toString(), timeStamp);
 
       var filename = req.body._user.toString() + 'audio' + timeStamp + '.wav'; 
       missionAnswer.audio = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
