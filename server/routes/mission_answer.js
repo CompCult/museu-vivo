@@ -40,7 +40,7 @@ router.post('/', function(req, res) {
     var filename = req.body._user.toString() + timeStamp + '.jpg'; 
 
     Uploads.uploadFile(req.body.image, req.body._user.toString(), timeStamp);
-    missionAnswer.image = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
+    missionAnswer.image = 'https://compcult.s3.amazonaws.com/compcult/minhaarvore/' + filename;
   };
 
   missionAnswer.save(function(err) {
@@ -64,7 +64,7 @@ router.put('/:mission_id', function(req, res) {
       Uploads.uploadFile('image', req.body.image, req.body._user.toString(), timeStamp);
 
       var filename = req.body._user.toString() + timeStamp + '.jpg'; 
-      missionAnswer.image = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
+      missionAnswer.image = 'https://compcult.s3.amazonaws.com/compcult/minhaarvore/' + filename;
     };
     if (req.body.audio) {
       var date = new Date();
@@ -72,7 +72,7 @@ router.put('/:mission_id', function(req, res) {
       uploadFile('audio', req.body.audio, req.body._user.toString(), timeStamp);
 
       var filename = req.body._user.toString() + timeStamp + '.wav'; 
-      missionAnswer.audio = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
+      missionAnswer.audio = 'https://compcult.s3.amazonaws.com/compcult/minhaarvore/' + filename;
     };
     // if (req.body.video) missionAnswer.video               = req.body.video;
     // if (req.body.text) missionAnswer.text                 = req.body.text;
