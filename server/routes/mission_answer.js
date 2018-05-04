@@ -23,7 +23,7 @@ router.post('/', function(req, res) {
   missionAnswer.status      = "Pendente";
   if (req.body._group) missionAnswer._group      = req.body._group;
   // if (req.body.video) missionAnswer.video     = req.body.video;
-  if (req.body.text) missionAnswer.text       = req.body.text;
+  if (req.body.text_msg) missionAnswer.text_msg       = req.body.text_msg;
   if (req.body.location_lat) missionAnswer.location_lat = req.body.location_lat;
   if (req.body.location_lng) missionAnswer.location_lng = req.body.location_lng;
   if (req.body.image) {
@@ -75,7 +75,7 @@ router.put('/:mission_id', function(req, res) {
       missionAnswer.audio = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
     };
     //if (req.body.video) missionAnswer.video               = req.body.video;
-    if (req.body.text) missionAnswer.text                 = req.body.text;
+    if (req.body.text_msg) missionAnswer.text_msg         = req.body.text_msg;
     if (req.body.location_lat) missionAnswer.location_lat = req.body.location_lat;
     if (req.body.location_lng) missionAnswer.location_lng = req.body.location_lng;
     
