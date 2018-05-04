@@ -27,7 +27,7 @@ router.post('/', function(req, res) {
     Uploads.uploadFile(req.body.picture, req.body._user.toString(), timeStamp);
 
     var filename = req.body._user.toString() + timeStamp + '.jpg'; 
-    post.picture = 'https://compcult.s3.amazonaws.com/compcult/minhaarvore/' + filename;
+    post.picture = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
   }
   if (req.body.audio) post.audio             = req.body.audio;
   if (req.body.video) post.video             = req.body.video;
@@ -53,7 +53,7 @@ router.put('/:post_id', function(req, res) {
       Uploads.uploadFile(req.body.picture, req.body._user.toString(), timeStamp);
 
       var filename = req.body._user.toString() + timeStamp + '.jpg'; 
-      post.picture = 'https://compcult.s3.amazonaws.com/compcult/minhaarvore/' + filename;
+      post.picture = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
     }
     if (req.body.audio) post.audio             = req.body.audio;
     if (req.body.video) post.video             = req.body.video;
