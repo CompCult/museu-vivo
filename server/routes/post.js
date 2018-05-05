@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var Post = require('../models/post.js');
+var User = require('../models/user.js');
 var Uploads = require('../upload.js');
 
 //Index
@@ -20,7 +21,9 @@ router.get('/', function(req, res) {
 router.post('/', function(req, res) {
   var post     = new Post();
   post._user   = req.body._user;
-  if (req.body.text_msg) post.text_msg       = req.body.text_msg;
+  if (req.body.text_msg) post.text_msg = req.body.text_msg;
+  if (req.body.location_lat) post.location_lat = req.body.location_lat;
+  if (req.body.location_lng) post.location_lng = req.body.location_lng;
   if (req.body.picture) {
     var date = new Date();
     var timeStamp = date.toLocaleString(); 
@@ -38,14 +41,21 @@ router.post('/', function(req, res) {
     post.audio = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
   };
   //if (req.body.video) post.video             = req.body.video;
-  if (req.body.location_lat) post.location_lat = req.body.location_lat;
-  if (req.body.location_lng) post.location_lng = req.body.location_lng;
 
-  post.save(function(err) {
-    if (err) {
-      res.status(400).send(err);
+  User.findById(req.body._user, function(err, user) {
+    if (!user || err) {
+      res.status(400).send("Usuário incorreto!");
     } else {
-      res.status(200).send(post);
+      post.author_name  = user.name; 
+      post.author_photo = user.picture;
+
+      post.save(function(err) {
+        if (err) {
+          res.status(400).send(err);
+        } else {
+          res.status(200).send(post);
+        }
+      });
     }
   });
 });

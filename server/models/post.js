@@ -8,6 +8,8 @@ var Post = new Schema({
     type: Number, 
     ref: './user.js' 
   },
+  author_name: String,
+  author_photo: String,
   picture: String,
   audio: String,
   video: String,
