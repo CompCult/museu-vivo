@@ -20,7 +20,7 @@ var MissionAnswer = new Schema({
   image: String,
   audio: String,
   video: String,
-  text: String,
+  text_msg: String,
   location_lat: String, 
   location_lng: String,
   created_at: {

@@ -9,7 +9,6 @@ var s3 =  new AWS.S3({
 
 class Uploads {
   static async uploadFile(file, _user, stamp){
-    console.log('uploads upload file');
     var buffer = new Buffer(file, 'base64');
     var filename = 'minhaarvore/' + _user + stamp + '.jpg';
 
@@ -20,6 +19,23 @@ class Uploads {
         ACL: 'public-read',
         ContentEncoding: 'base64',
         ContentType: 'image/jpeg',
+    };        
+
+    let putObjectPromise = await s3.upload(params).promise()
+    let location = putObjectPromise.Location
+  }
+
+  static async uploadAudio(file, _user, stamp){
+    var buffer = new Buffer(file, 'base64');
+    var filename = 'minhaarvore/' + _user + stamp + '.wav';
+
+    var params = {
+        Bucket: 'compcult',
+        Key: filename,
+        Body: buffer,
+        ACL: 'public-read',
+        ContentEncoding: 'base64',
+        ContentType: 'audio/wav',
     };        
 
     let putObjectPromise = await s3.upload(params).promise()

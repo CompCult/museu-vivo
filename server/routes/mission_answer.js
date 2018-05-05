@@ -22,16 +22,8 @@ router.post('/', function(req, res) {
   missionAnswer._mission    = req.body._mission;
   missionAnswer.status      = "Pendente";
   if (req.body._group) missionAnswer._group      = req.body._group;
-  // if (req.body.audio) {
-  //   var date = new Date();
-  //   var timeStamp = date.toLocaleString(); 
-  //   uploadFile('audio', req.body.audio, req.body._user.toString(), timeStamp);
-
-  //   var filename = req.body._user.toString() + 'audio' + timeStamp + '.wav'; 
-  //   missionAnswer.audio = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
-  // };
   // if (req.body.video) missionAnswer.video     = req.body.video;
-  if (req.body.text) missionAnswer.text       = req.body.text;
+  if (req.body.text_msg) missionAnswer.text_msg       = req.body.text_msg;
   if (req.body.location_lat) missionAnswer.location_lat = req.body.location_lat;
   if (req.body.location_lng) missionAnswer.location_lng = req.body.location_lng;
   if (req.body.image) {
@@ -41,6 +33,14 @@ router.post('/', function(req, res) {
 
     Uploads.uploadFile(req.body.image, req.body._user.toString(), timeStamp);
     missionAnswer.image = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
+  };
+  if (req.body.audio) {
+    var date = new Date();
+    var timeStamp = date.toLocaleString(); 
+    Uploads.uploadAudio(req.body.audio, req.body._user.toString(), timeStamp);
+
+    var filename = req.body._user.toString() + 'audio' + timeStamp + '.wav'; 
+    missionAnswer.audio = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
   };
 
   missionAnswer.save(function(err) {
@@ -69,15 +69,15 @@ router.put('/:mission_id', function(req, res) {
     if (req.body.audio) {
       var date = new Date();
       var timeStamp = date.toLocaleString(); 
-      uploadFile('audio', req.body.audio, req.body._user.toString(), timeStamp);
+      Uploads.uploadAudio(req.body.audio, req.body._user.toString(), timeStamp);
 
-      var filename = req.body._user.toString() + timeStamp + '.wav'; 
+      var filename = req.body._user.toString() + 'audio' + timeStamp + '.wav'; 
       missionAnswer.audio = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
     };
-    // if (req.body.video) missionAnswer.video               = req.body.video;
-    // if (req.body.text) missionAnswer.text                 = req.body.text;
-    // if (req.body.location_lat) missionAnswer.location_lat = req.body.location_lat;
-    // if (req.body.location_lng) missionAnswer.location_lng = req.body.location_lng;
+    //if (req.body.video) missionAnswer.video               = req.body.video;
+    if (req.body.text_msg) missionAnswer.text_msg         = req.body.text_msg;
+    if (req.body.location_lat) missionAnswer.location_lat = req.body.location_lat;
+    if (req.body.location_lng) missionAnswer.location_lng = req.body.location_lng;
     
     missionAnswer.save(function(err) {
       if (err) {
