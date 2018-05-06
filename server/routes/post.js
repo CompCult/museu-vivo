@@ -86,6 +86,7 @@ router.post('/update/:post_id', function(req, res) {
         //if (req.body.video) post.video             = req.body.video;
         if (req.body.location_lat) post.location_lat = req.body.location_lat;
         if (req.body.location_lng) post.location_lng = req.body.location_lng;
+        if (req.body.points) post.points = req.body.points;
 
         post.save(function(err) {
           if (err) {
