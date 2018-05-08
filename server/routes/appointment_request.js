@@ -26,17 +26,15 @@ router.get('/:request_id', function(req, res) {
   });
 });
 
-// Trees from user or type
+// Appointments from user
 router.get('/fields', function(req, res) {
-  if (req.query.user) {
-    AppointmentRequest.find({ _user: req.query.user}, function(err, appointments) {
-      if (err) {
-        res.status(400).send(err);
-      } else {
-        res.status(200).json(appointments);
-      }
-    });
-  }
+  AppointmentRequest.find({ _user: req.query.user}, function(err, appointments) {
+    if (err) {
+      res.status(400).send(err);
+    } else {
+      res.status(200).json(appointments);
+    }
+  });
 });
 
 //Create
