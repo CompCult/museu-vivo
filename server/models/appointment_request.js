@@ -4,7 +4,14 @@ var autoInc   = require('mongoose-sequence')(mongoose);
 
 var AppointmentRequest = new Schema({
   _id: Number,
-  _appointment: Number,
+  _user: { 
+    type: Number, 
+    ref: './user.js' 
+  },
+  _appointment: {
+    type: Number,
+    ref: './appointment.js'
+  },
   status: String,
   message: String,
   updated_at: Date,
