@@ -44,7 +44,7 @@ router.post('/', function(req, res) {
   request._appointment  = req.body._appointment;
   request.status        = req.body.status;
   request.message       = req.body.message;
-  request.updated_at    = Date().now();
+  request.updated_at    = new Date();
 
   request.save(function(err) {
     if (err) {
