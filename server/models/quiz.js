@@ -21,8 +21,7 @@ var Quiz = new Schema({
     default: Date.now
   },
   end_time: {
-    type: Date,
-    default: Date.now
+    type: Date
   },
   created_at: {
     type: Date,
