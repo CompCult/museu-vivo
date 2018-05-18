@@ -16,6 +16,19 @@ router.get('/', function(req, res) {
   });
 });
 
+//Find by params
+router.get('/query/fields', function(req, res) {
+  Mission.find(req.query, function(err, mission) {
+    if (err) {
+      res.status(400).send(err);
+    } else if (!mission){
+      res.status(404).send("Missão não encontrada");
+    } else {
+      res.status(200).json(mission);
+    }
+  });
+});
+
 //Create
 router.post('/', function(req, res) {
   var mission              = new Mission();

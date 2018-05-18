@@ -15,6 +15,18 @@ router.get('/', function(req, res) {
   });
 });
 
+//Find by params
+router.get('/query/fields', function(req, res) {
+  Reaction.find(req.query, function(err, reaction) {
+    if (err) {
+      res.status(400).send(err);
+    } else if (!reaction){
+      res.status(404).send("Reação não encontrada");
+    } else {
+      res.status(200).json(reaction);
+    }
+  });
+});
 
 //Like
 router.post('/', function(req, res) {

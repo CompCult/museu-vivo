@@ -15,6 +15,19 @@ router.get('/', function(req, res) {
   });
 });
 
+//Find by params
+router.get('/query/fields', function(req, res) {
+  MissionAnswer.find(req.query, function(err, answer) {
+    if (err) {
+      res.status(400).send(err);
+    } else if (!answer){
+      res.status(404).send("Resposta da missão não encontrada");
+    } else {
+      res.status(200).json(answer);
+    }
+  });
+});
+
 //Create
 router.post('/', function(req, res) {
   var missionAnswer         = new MissionAnswer();

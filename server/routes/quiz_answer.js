@@ -14,27 +14,18 @@ router.get('/', function(req, res) {
   });
 });
 
-// Answers for quiz or user
-router.get('/fields', function(req, res) {
-  if (req.query.quiz) {
-    QuizAnswer.find({ _quiz: req.query.quiz }, function(err, quiz_answers) {
-      if (err) {
-        res.status(400).send(err);
-      } else {
-        res.status(200).json(quiz_answers);
-      }
-    });
-  } else if (req.query.user) {
-    QuizAnswer.find({ _user: req.query.user }, function(err, quiz_answers) {
-      if (err) {
-        res.status(400).send(err);
-      } else {
-        res.status(200).json(quiz_answers);
-      }
-    });
-  }
+//Find by params
+router.get('/query/fields', function(req, res) {
+  QuizAnswer.find(req.query, function(err, answer) {
+    if (err) {
+      res.status(400).send(err);
+    } else if (!answer){
+      res.status(404).send("Resposta do quiz não encontrada");
+    } else {
+      res.status(200).json(answer);
+    }
+  });
 });
-
 
 //Create
 router.post('/', function(req, res) {

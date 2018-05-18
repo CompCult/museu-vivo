@@ -15,25 +15,17 @@ router.get('/', function(req, res) {
   });
 });
 
-// Trees from user or type
-router.get('/fields', function(req, res) {
-  if (req.query.user) {
-    TreeType.find({ _user: req.query.user}, function(err, trees) {
-      if (err) {
-        res.status(400).send(err);
-      } else {
-        res.status(200).json(trees);
-      }
-    });
-  } else if (req.query.type) {
-    TreeType.find({ _type: req.query.type}, function(err, trees) {
-      if (err) {
-        res.status(400).send(err);
-      } else {
-        res.status(200).json(trees);
-      }
-    });
-  }
+//Find by params
+router.get('/query/fields', function(req, res) {
+  TreeType.find(req.query, function(err, type) {
+    if (err) {
+      res.status(400).send(err);
+    } else if (!type){
+      res.status(404).send("Tipo não encontrado");
+    } else {
+      res.status(200).json(type);
+    }
+  });
 });
 
 //Create

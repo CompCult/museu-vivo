@@ -15,25 +15,17 @@ router.get('/', function(req, res) {
   });
 });
 
-// Trees from user or type
-router.get('/fields', function(req, res) {
-  if (req.query.user) {
-    Tree.find({ _user: req.query.user}, function(err, trees) {
-      if (err) {
-        res.status(400).send(err);
-      } else {
-        res.status(200).json(trees);
-      }
-    });
-  } else if (req.query.type) {
-    Tree.find({ _type: req.query.type}, function(err, trees) {
-      if (err) {
-        res.status(400).send(err);
-      } else {
-        res.status(200).json(trees);
-      }
-    });
-  }
+//Find by params
+router.get('/query/fields', function(req, res) {
+  Tree.find(req.query, function(err, tree) {
+    if (err) {
+      res.status(400).send(err);
+    } else if (!tree){
+      res.status(404).send("árvore não encontrada");
+    } else {
+      res.status(200).json(tree);
+    }
+  });
 });
 
 //Create

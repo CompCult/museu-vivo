@@ -15,6 +15,19 @@ router.get('/', function(req, res) {
   });
 });
 
+//Find by params
+router.get('/query/fields', function(req, res) {
+  Quiz.find(req.query, function(err,quiz) {
+    if (err) {
+      res.status(400).send(err);
+    } else if (!quiz){
+      res.status(404).send("Quiz não encontrado");
+    } else {
+      res.status(200).json(quiz);
+    }
+  });
+});
+
 //Create
 router.post('/', function(req, res) {
   var quiz             = new Quiz();

@@ -27,11 +27,24 @@ router.get('/:user_id', function(req, res) {
   });
 });
 
+//Find by params
+router.get('/query/fields', function(req, res) {
+  User.find(req.query, function(err, usuario) {
+    if (err) {
+      res.status(400).send(err);
+    } else if (!usuario){
+      res.status(404).send("Usuário não encontrado");
+    } else {
+      res.status(200).json(usuario);
+    }
+  });
+});
+
 //Create
 router.post('/register', function(req, res) {
   var user      = new User();
-  user.name       = req.body.name;
-  user.email      = req.body.email;
+  user.name     = req.body.name;
+  user.email    = req.body.email;
 
   bcrypt.hash(req.body.password, 10, function(err, hash) {
     if (err) {

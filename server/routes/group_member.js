@@ -16,17 +16,17 @@ router.get('/', function(req, res) {
   });
 });
 
-//Members by group
-router.get('/fields', function(req, res) {
-  if (req.query.group) {
-    GroupMember.find({ _group: req.query.group }, function(err, members) {
-      if (err) {
-        res.status(400).send(err);
-      } else {
-        res.status(200).json(members);
-      }
-    });
-  }
+//Find by params
+router.get('/query/fields', function(req, res) {
+  GroupMember.find(req.query, function(err, member) {
+    if (err) {
+      res.status(400).send(err);
+    } else if (!member){
+      res.status(404).send("Membro não encontrado");
+    } else {
+      res.status(200).json(member);
+    }
+  });
 });
 
 //Create

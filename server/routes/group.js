@@ -15,6 +15,19 @@ router.get('/', function(req, res) {
   });
 });
 
+//Find by params
+router.get('/query/fields', function(req, res) {
+  Group.find(req.query, function(err, Group) {
+    if (err) {
+      res.status(400).send(err);
+    } else if (!Group){
+      res.status(404).send("Grupo não encontrado");
+    } else {
+      res.status(200).json(Group);
+    }
+  });
+});
+
 //Create
 router.post('/', function(req, res) {
   var group              = new Group();

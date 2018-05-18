@@ -15,6 +15,19 @@ router.get('/', function(req, res) {
   });
 });
 
+//Find by params
+router.get('/query/fields', function(req, res) {
+  Appointment.find(req.query, function(err, event) {
+    if (err) {
+      res.status(400).send(err);
+    } else if (!event){
+      res.status(404).send("Evento não encontrado");
+    } else {
+      res.status(200).json(event);
+    }
+  });
+});
+
 //Show
 router.get('/:appointment_id', function(req, res) {
   Appointment.findById(req.params.appointment_id, function(err, appointment) {

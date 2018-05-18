@@ -16,6 +16,19 @@ router.get('/', function(req, res) {
   });
 });
 
+//Find by params
+router.get('/query/fields', function(req, res) {
+  Post.find(req.query, function(err, post) {
+    if (err) {
+      res.status(400).send(err);
+    } else if (!post){
+      res.status(404).send("Post não encontrado");
+    } else {
+      res.status(200).json(post);
+    }
+  });
+});
+
 
 //Create
 router.post('/', function(req, res) {
