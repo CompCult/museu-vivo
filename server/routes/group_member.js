@@ -32,7 +32,7 @@ router.get('/query/fields', function(req, res) {
 
 //Find groups from user
 router.get('/groups', function(req, res) {
-  GroupMember.find({ _user: req.query.user}, function(err, members) {
+  GroupMember.find({ _user: req.query._user}, function(err, members) {
     if (err) {
       res.status(400).send(err);
     } else if (!members){
