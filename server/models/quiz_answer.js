@@ -12,6 +12,7 @@ var QuizAnswer = new Schema({
     ref: './quiz.js' 
   },
   answer: String,
+  status: String,
   created_at: {
     type: Date,
     default: Date.now

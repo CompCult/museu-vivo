@@ -68,8 +68,66 @@ router.post('/register', function(req, res) {
   });
 });
 
-// Update
+// Update with post
 router.post('/update/:user_id', function(req, res) {
+  User.findById(req.params.user_id, function(err, user) {
+    if (!user) {
+      res.status(400).send('Usuário não encontrado!');
+    }
+
+    if (req.body.name) user.name = req.body.name;
+    if (req.body.email) user.email = req.body.email;
+    if (req.body.type) user.type = req.body.type;
+    if (req.body.institution) user.institution = req.body.institution;
+    if (req.body.birth) user.birth = new Date(req.body.birth);
+    if (req.body.sex) user.sex = req.body.sex;
+    if (req.body.phone) user.phone = req.body.phone;
+    if (req.body.street) user.street = req.body.street;
+    if (req.body.complement) user.complement = req.body.complement;
+    if (req.body.number) user.number = req.body.number;
+    if (req.body.neighborhood) user.neighborhood = req.body.neighborhood;
+    if (req.body.city) user.city = req.body.city;
+    if (req.body.state) user.state = req.body.state;
+    if (req.body.zipcode) user.zipcode = req.body.zipcode;
+    if (req.body.points) user.points = req.body.points;
+    if (req.body.sec_points) user.sec_points = req.body.sec_points;
+    if (req.body.request_limit) user.request_limit = req.body.request_limit;
+    if (req.body.banned_until) user.banned_until = new Date(req.body.banned_until);
+    if (req.body.picture) {
+      var date = new Date();
+      var timeStamp = date.toLocaleString();
+      var filename = req.params.user_id.toString() + timeStamp + '.jpg';
+
+      Uploads.uploadFile(req.body.picture, req.params.user_id.toString(), timeStamp);
+      user.picture = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
+    };
+
+
+    if (req.body.password) {
+      bcrypt.hash(req.body.password, 10, function(err, hash) {
+        user.password = hash;
+        user.save(function(err) {
+          if (err) {
+            res.status(400).send(err);
+          } else {
+            res.status(200).send("Usuário atualizado.");
+          }
+        });
+      });
+    } else {
+      user.save(function(err) {
+        if (err) {
+          res.status(400).send(err);
+        } else {
+          res.status(200).send("Usuário atualizado.");
+        }
+      });
+    }
+  });
+});
+
+// Update
+router.put('/:user_id', function(req, res) {
   User.findById(req.params.user_id, function(err, user) {
     if (!user) {
       res.status(400).send('Usuário não encontrado!');

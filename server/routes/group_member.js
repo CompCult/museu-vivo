@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var bcrypt  = require('bcryptjs');
 
-
+var User = require('../models/user.js');
 var GroupMember = require('../models/group_member.js');
 
 //Index
@@ -32,16 +32,40 @@ router.get('/query/fields', function(req, res) {
 //Create
 router.post('/', function(req, res) {
   var member       = new GroupMember();
-  member._user     = req.body._user;
-  member._group    = req.body._group;
-  member.is_admin  = req.body.is_admin;
 
-  member.save(function(err) {
+  User.findOne({ email: req.body.email}, function(err, user) {
     if (err) {
-      res.status(400).send(err);
+      req.status(400).send(err);
+    } else if (!user) {
+      req.status(404).send("Usuário não encontrado")
     } else {
-      res.status(200).send(member);
+      member._user     = user._id;
+      member._group    = req.body._group;
+      member.is_admin  = req.body.is_admin;
+
+      member.save(function(err) {
+        if (err) {
+          res.status(400).send(err);
+        } else {
+          res.status(200).send(member);
+        }
+      });
     }
+  });
+});
+
+// Update with post
+router.post('/update/:member_id', function(req, res) {
+  GroupMember.findById(req.params.member_id, function(err, member) {
+    if (req.body.is_admin) member.is_admin  = req.body.is_admin;
+    
+    member.save(function(err) {
+      if (err) {
+        res.status(400).send(err);
+      } else {
+        res.status(200).send(member._id);
+      }
+    });
   });
 });
 
@@ -57,6 +81,17 @@ router.put('/:member_id', function(req, res) {
         res.status(200).send(member._id);
       }
     });
+  });
+});
+
+// Delete with post
+router.post('/delete/:member_id', function(req, res) {
+  GroupMember.remove({ _id: req.params.member_id }, function(err) {
+    if (err) {
+      res.status(400).send(err);
+    } else {
+      res.status(200).send("Membro deletado!");
+    }
   });
 });
 

@@ -29,7 +29,6 @@ router.get('/query/fields', function(req, res) {
   });
 });
 
-
 //Create
 router.post('/', function(req, res) {
   var post     = new Post();
@@ -113,7 +112,7 @@ router.post('/update/:post_id', function(req, res) {
 });
 
 // Delete
-router.delete('/:post_id', function(req, res) {
+router.post('/delete/:post_id', function(req, res) {
   Post.remove({ _id: req.params.post_id }, function(err) {
     if (err) {
       res.status(400).send(err);

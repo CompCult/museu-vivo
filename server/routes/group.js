@@ -43,6 +43,22 @@ router.post('/', function(req, res) {
   });
 });
 
+// Update with post
+router.post('/update/:group_id', function(req, res) {
+  Group.findById(req.params.group_id, function(err, group) {
+    if (req.body.name) group.name                       = req.body.name;
+    if (req.body.description) group.description         = req.body.description;
+    
+    group.save(function(err) {
+      if (err) {
+        res.status(400).send(err);
+      } else {
+        res.status(200).send(group._id);
+      }
+    });
+  });
+});
+
 // Update
 router.put('/:group_id', function(req, res) {
   Group.findById(req.params.group_id, function(err, group) {
@@ -56,6 +72,17 @@ router.put('/:group_id', function(req, res) {
         res.status(200).send(group._id);
       }
     });
+  });
+});
+
+// Delete with post
+router.post('/delete/:group_id', function(req, res) {
+  Group.remove({ _id: req.params.group_id }, function(err) {
+    if (err) {
+      res.status(400).send(err);
+    } else {
+      res.status(200).send("Grupo removido.");
+    }
   });
 });
 
