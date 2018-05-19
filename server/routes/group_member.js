@@ -3,6 +3,7 @@ var router = express.Router();
 var bcrypt  = require('bcryptjs');
 
 var User = require('../models/user.js');
+var Group = require('../models/group.js');
 var GroupMember = require('../models/group_member.js');
 
 //Index
@@ -28,6 +29,27 @@ router.get('/query/fields', function(req, res) {
     }
   });
 });
+
+//Find groups from user
+router.get('/groups', function(req, res) {
+  GroupMember.find({ _user: req.query.user}, function(err, members) {
+    if (err) {
+      res.status(400).send(err);
+    } else if (!members){
+      res.status(404).send("Membro não encontrado");
+    } else {
+      promises = members.map(getGroupFromMember);
+
+      Promise.all(promises).then(function(results) {
+          res.status(200).json(results);
+      })      
+    }
+  });
+});
+
+var getGroupFromMember = async function(member) {
+    return Group.findById(member._group).exec();
+}
 
 //Create
 router.post('/', function(req, res) {
