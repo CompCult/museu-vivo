@@ -188,7 +188,7 @@ router.put('/:user_id', function(req, res) {
 router.post('/auth', function(req, res) {
   User.findOne({'email': req.body.email}, function(error, user) {
     if (!user) {
-      res.status(400).send('Usuário não encontrado.');
+      res.status(404).send('Usuário não encontrado.');
     } else if (userIsBanned(user.banned_until)) {
         res.status(400).send('Usuário banido até ' + user.banned_until.toLocaleString())
     } else {
@@ -199,7 +199,7 @@ router.post('/auth', function(req, res) {
           if (result) {
             res.status(200).json(user);
           } else {
-            res.status(400).json('Senha incorreta.');
+            res.status(401).json('Senha incorreta.');
           }
         }
       });

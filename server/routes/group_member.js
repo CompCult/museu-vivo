@@ -85,7 +85,7 @@ router.post('/update/:member_id', function(req, res) {
       if (err) {
         res.status(400).send(err);
       } else {
-        res.status(200).send(member._id);
+        res.status(200).send(member);
       }
     });
   });
