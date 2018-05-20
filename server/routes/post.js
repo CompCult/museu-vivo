@@ -112,7 +112,7 @@ router.post('/update/:post_id', function(req, res) {
 });
 
 // Delete
-router.post('/delete/:post_id', function(req, res) {
+router.post('/remove/:post_id', function(req, res) {
   Post.remove({ _id: req.params.post_id }, function(err) {
     if (err) {
       res.status(400).send(err);

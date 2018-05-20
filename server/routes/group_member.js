@@ -107,7 +107,7 @@ router.put('/:member_id', function(req, res) {
 });
 
 // Delete with post
-router.post('/delete/:member_id', function(req, res) {
+router.post('/remove/:member_id', function(req, res) {
   GroupMember.remove({ _id: req.params.member_id }, function(err) {
     if (err) {
       res.status(400).send(err);
