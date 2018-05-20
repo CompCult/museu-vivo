@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
+var User = require('../models/user.js');
+var Quiz = require('../models/quiz.js');
 var QuizAnswer = require('../models/quiz_answer.js');
 
 //Index
@@ -38,10 +40,39 @@ router.post('/', function(req, res) {
     if (err) {
       res.status(400).send(err);
     } else {
+      verifyAnswer(quiz_answer);
+
       res.status(200).send(quiz_answer);
     }
   });
 });
+
+var verifyAnswer = function(answer) {
+  Quiz.findById(answer._quiz, function(err, quiz) {
+    if (quiz) {
+      if(!quiz.correct_answer || (quiz.correct_answer && quiz.correct_answer == answer.answer)) {
+        console.log('hellow')
+        recompenseUser(answer._user, quiz.points);
+
+        answer.approved = true;
+        answer.save(function(err) {
+          console.log("Resposta correta");
+        });
+      }
+    }
+  });
+}
+
+var recompenseUser = function(user_id, points) {
+  User.findById(user_id, function(err, user) {
+      if (user) {
+        user.points += points;
+        user.save(function(err) {
+          console.log("Usuário recompensado");
+        });
+      }
+  });
+}
 
 // Update
 router.put('/:answer_id', function(req, res) {

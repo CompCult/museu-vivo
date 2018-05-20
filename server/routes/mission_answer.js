@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
+var Mission = require('../models/mission.js');
 var MissionAnswer = require('../models/mission_answer.js');
 var Uploads = require('../upload.js');
 
@@ -91,6 +92,16 @@ router.put('/:mission_id', function(req, res) {
     if (req.body.text_msg) missionAnswer.text_msg         = req.body.text_msg;
     if (req.body.location_lat) missionAnswer.location_lat = req.body.location_lat;
     if (req.body.location_lng) missionAnswer.location_lng = req.body.location_lng;
+    if (req.body.status) {
+      missionAnswer.status = req.body.status;
+      if (status == "Aprovado") {
+        Mission.findById(missionAnswer._mission, function(err, mission) {
+          if (mission) {
+            recompenseUser(missionAnswer._user, mission.points);
+          }
+        });
+      }
+    }
     
     missionAnswer.save(function(err) {
       if (err) {
@@ -101,6 +112,17 @@ router.put('/:mission_id', function(req, res) {
     });
   });
 });
+
+var recompenseUser = function(user_id, points) {
+  User.findById(user_id, function(err, user) {
+      if (user) {
+        user.points += points;
+        user.save(function(err) {
+          console.log("Usuário recompensado");
+        });
+      }
+  });
+}
 
 // Delete
 router.delete('/:mission_id', function(req, res) {
