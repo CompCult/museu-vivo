@@ -3,6 +3,7 @@ var router = express.Router();
 
 
 var Group = require('../models/group.js');
+var GroupMember = require('../models/group_member.js');
 
 //Index
 router.get('/', function(req, res) {
@@ -81,6 +82,8 @@ router.post('/remove/:group_id', function(req, res) {
     if (err) {
       res.status(400).send(err);
     } else {
+      removeGroupMembers(req.params.group_id);
+
       res.status(200).send("Grupo removido.");
     }
   });
@@ -92,9 +95,15 @@ router.delete('/:group_id', function(req, res) {
     if (err) {
       res.status(400).send(err);
     } else {
+      removeGroupMembers(req.params.group_id);
+
       res.status(200).send("Grupo removido.");
     }
   });
 });
+
+var removeGroupMembers = function(group_id) {
+  GroupMember.remove({ _group: group_id }).exec();
+}
 
 module.exports = router;
