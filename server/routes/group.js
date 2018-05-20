@@ -53,7 +53,7 @@ router.post('/update/:group_id', function(req, res) {
       if (err) {
         res.status(400).send(err);
       } else {
-        res.status(200).send(group._id);
+        res.status(200).send(group);
       }
     });
   });
@@ -69,14 +69,14 @@ router.put('/:group_id', function(req, res) {
       if (err) {
         res.status(400).send(err);
       } else {
-        res.status(200).send(group._id);
+        res.status(200).send(group);
       }
     });
   });
 });
 
 // Delete with post
-router.post('/delete/:group_id', function(req, res) {
+router.post('/remove/:group_id', function(req, res) {
   Group.remove({ _id: req.params.group_id }, function(err) {
     if (err) {
       res.status(400).send(err);
