@@ -29,6 +29,28 @@ router.get('/query/fields', function(req, res) {
   });
 });
 
+//public?user_id
+router.get('/public', function(req, res) {
+  Mission.find({}, function(err, mission) {
+    if (err) {
+      res.status(400).send(err);
+    } else {
+      res.status(200).json(mission);
+    }
+  });
+});
+
+//private?user_id&quiz_id
+router.get('/private', function(req, res) {
+  Mission.find({}, function(err, mission) {
+    if (err) {
+      res.status(400).send(err);
+    } else {
+      res.status(200).json(mission);
+    }
+  });
+});
+
 //Create
 router.post('/', function(req, res) {
   var mission              = new Mission();

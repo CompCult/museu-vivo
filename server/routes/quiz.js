@@ -3,9 +3,32 @@ var router = express.Router();
 
 
 var Quiz = require('../models/quiz.js');
+var QuizAnswer = require('../models/quiz_answer.js');
 
 //Index
 router.get('/', function(req, res) {
+  Quiz.find({}, function(err, quizzes) {
+    if (err) {
+      res.status(400).send(err);
+    } else {
+      res.status(200).json(quizzes);
+    }
+  });
+});
+
+//public?user_id
+router.get('/public', function(req, res) {
+  Quiz.find({}, function(err, quizzes) {
+    if (err) {
+      res.status(400).send(err);
+    } else {
+      res.status(200).json(quizzes);
+    }
+  });
+});
+
+//private?user_id&quiz_id
+router.get('/private', function(req, res) {
   Quiz.find({}, function(err, quizzes) {
     if (err) {
       res.status(400).send(err);
