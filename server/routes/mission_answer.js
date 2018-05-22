@@ -58,10 +58,10 @@ router.post('/', function(req, res) {
   if (req.body.video)  {
     var date = new Date();
     var timeStamp = date.toLocaleString(); 
-    Uploads.uploadVideo(req.body.audio, req.body._user.toString(), timeStamp);
+    Uploads.uploadVideo(req.body.video, req.body._user.toString(), timeStamp);
 
     var filename = req.body._user.toString() + 'video' + timeStamp + '.mp4'; 
-    missionAnswer.audio = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
+    missionAnswer.video = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
   };
 
   missionAnswer.save(function(err) {
@@ -98,10 +98,10 @@ router.put('/:mission_id', function(req, res) {
     if (req.body.video)  {
       var date = new Date();
       var timeStamp = date.toLocaleString(); 
-      Uploads.uploadVideo(req.body.audio, req.body._user.toString(), timeStamp);
+      Uploads.uploadVideo(req.body.video, req.body._user.toString(), timeStamp);
 
       var filename = req.body._user.toString() + 'video' + timeStamp + '.mp4'; 
-      missionAnswer.audio = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
+      missionAnswer.video = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
     };
     if (req.body.text_msg) missionAnswer.text_msg         = req.body.text_msg;
     if (req.body.location_lat) missionAnswer.location_lat = req.body.location_lat;
