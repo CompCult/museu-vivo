@@ -36,7 +36,6 @@ router.post('/', function(req, res) {
   missionAnswer._mission    = req.body._mission;
   missionAnswer.status      = "Pendente";
   if (req.body._group) missionAnswer._group      = req.body._group;
-  // if (req.body.video) missionAnswer.video     = req.body.video;
   if (req.body.text_msg) missionAnswer.text_msg       = req.body.text_msg;
   if (req.body.location_lat) missionAnswer.location_lat = req.body.location_lat;
   if (req.body.location_lng) missionAnswer.location_lng = req.body.location_lng;
@@ -54,6 +53,14 @@ router.post('/', function(req, res) {
     Uploads.uploadAudio(req.body.audio, req.body._user.toString(), timeStamp);
 
     var filename = req.body._user.toString() + 'audio' + timeStamp + '.wav'; 
+    missionAnswer.audio = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
+  };
+  if (req.body.video)  {
+    var date = new Date();
+    var timeStamp = date.toLocaleString(); 
+    Uploads.uploadVideo(req.body.audio, req.body._user.toString(), timeStamp);
+
+    var filename = req.body._user.toString() + 'video' + timeStamp + '.mp4'; 
     missionAnswer.audio = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
   };
 
@@ -88,7 +95,14 @@ router.put('/:mission_id', function(req, res) {
       var filename = req.body._user.toString() + 'audio' + timeStamp + '.wav'; 
       missionAnswer.audio = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
     };
-    //if (req.body.video) missionAnswer.video               = req.body.video;
+    if (req.body.video)  {
+      var date = new Date();
+      var timeStamp = date.toLocaleString(); 
+      Uploads.uploadVideo(req.body.audio, req.body._user.toString(), timeStamp);
+
+      var filename = req.body._user.toString() + 'video' + timeStamp + '.mp4'; 
+      missionAnswer.audio = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
+    };
     if (req.body.text_msg) missionAnswer.text_msg         = req.body.text_msg;
     if (req.body.location_lat) missionAnswer.location_lat = req.body.location_lat;
     if (req.body.location_lng) missionAnswer.location_lng = req.body.location_lng;

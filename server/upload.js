@@ -43,6 +43,25 @@ class Uploads {
 
     console.log(location);
   }
+
+  static async uploadAudio(file, _user, stamp){
+    var buffer = new Buffer(file, 'base64');
+    var filename = 'minhaarvore/' + _user + stamp + '.mp4';
+
+    var params = {
+        Bucket: 'compcult',
+        Key: filename,
+        Body: buffer,
+        ACL: 'public-read',
+        ContentEncoding: 'base64',
+        ContentType: 'video/mp4',
+    };        
+
+    let putObjectPromise = await s3.upload(params).promise()
+    let location = putObjectPromise.Location
+
+    console.log(location);
+  }
 }
 
 module.exports = Uploads;
