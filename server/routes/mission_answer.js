@@ -138,7 +138,6 @@ var recompenseUser = function(user_id, points) {
   });
 }
 
-// Delete
 router.delete('/:mission_id', function(req, res) {
   MissionAnswer.remove({ _id: req.params.mission_id }, function(err) {
     if (err) {
