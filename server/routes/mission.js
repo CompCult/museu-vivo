@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var bcrypt  = require('bcryptjs');
 
 
 var Mission = require('../models/mission.js');
+var MissionAnswer = require('../models/mission_answer.js');
+
 
 //Index
 router.get('/', function(req, res) {
@@ -40,16 +41,39 @@ router.get('/public', function(req, res) {
   });
 });
 
-//private?user_id&quiz_id
+//private?user_id&secret_code
 router.get('/private', function(req, res) {
-  Mission.find({}, function(err, mission) {
+  Mission.findOne({ secret_code: req.query.secret_code }, async function(err, mission) {
     if (err) {
       res.status(400).send(err);
+    } else if (!mission) {
+      res.status(404).send('Missão não encontrada');
     } else {
-      res.status(200).json(mission);
+      let end_time = new Date(mission.end_time);
+      let date = new Date();
+      let answered;
+
+      try {
+        answered = await wasMissionAnswered(mission._id, req.query.user_id);
+      } catch (err) {
+        res.status(400).send(err);
+      }
+
+      if (end_time.toLocaleString() < date.toLocaleString()) {
+        res.status(401).send('Missão expirada');
+      } else if (mission.single_answer && answered) {
+        res.status(401).send('Missão já foi respondida');
+      } else {
+        res.status(200).json(mission);
+      }
     }
   });
 });
+
+var wasMissionAnswered = async function(mission, user) {
+  answers = await MissionAnswer.find({ _mission: mission, _user: user }).exec();
+  return answers.length > 0;
+}
 
 //Create
 router.post('/', function(req, res) {

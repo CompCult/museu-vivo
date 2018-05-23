@@ -27,16 +27,39 @@ router.get('/public', function(req, res) {
   });
 });
 
-//private?user_id&quiz_id
+//private?user_id&secret_code
 router.get('/private', function(req, res) {
-  Quiz.find({}, function(err, quizzes) {
+  Quiz.findOne({ secret_code: req.query.secret_code }, async function(err, quiz) {
     if (err) {
       res.status(400).send(err);
+    } else if (!quiz) {
+      res.status(404).send('Quiz não encontrado');
     } else {
-      res.status(200).json(quizzes);
+      let end_time = new Date(quiz.end_time);
+      let date = new Date();
+      let answered;
+
+      try {
+        answered = await wasQuizAnswered(quiz._id, req.query.user_id);
+      } catch (err) {
+        res.status(400).send(err);
+      }
+
+      if (end_time.toLocaleString() < date.toLocaleString()) {
+        res.status(401).send('Quiz expirado');
+      } else if (quiz.single_answer && answered) {
+        res.status(401).send('Quiz já foi respondido');
+      } else {
+        res.status(200).json(quiz);
+      }
     }
   });
 });
+
+var wasQuizAnswered = async function(quiz, user) {
+  answers = await QuizAnswer.find({ _quiz: quiz, _user: user }).exec();
+  return answers.length > 0;
+}
 
 //Find by params
 router.get('/query/fields', function(req, res) {
