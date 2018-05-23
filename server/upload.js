@@ -44,7 +44,7 @@ class Uploads {
     console.log(location);
   }
 
-  static async uploadAudio(file, _user, stamp){
+  static async uploadVideo(file, _user, stamp){
     var buffer = new Buffer(file, 'base64');
     var filename = 'minhaarvore/' + _user + stamp + '.mp4';
 
