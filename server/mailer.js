@@ -21,9 +21,9 @@ class Mailer {
         var mailOptions = {
             from: "Equipe Minha Arvore <ufcgcompcult@gmail.com>", // sender address
             to: email, // list of receivers
-            subject: content.subject, // Subject line
-            text: content.text, // plaintext body
-            html: content.html
+            subject: author, // Subject line
+            text: message, // plaintext body
+            html: message
         }
 
         transporter.sendMail(mailOptions, function(error, response){

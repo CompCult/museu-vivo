@@ -26,8 +26,14 @@ router.get('/', function(req, res) {
   });
 });
 
-var inject_data = function(answer) {
+var inject_data = async function(answer) {
+  let user_id = answer._user;
+  let quiz_id = answer._quiz;
+  let group_id = answer._group;
+  let answer_complete = answer;
 
+  let user_obj = await User.findById(user_id).exec();
+  let quiz_obj = await Quiz.findById(quiz_id).exec();
 }
 
 //Find by params

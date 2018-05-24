@@ -18,7 +18,7 @@ class Uploads {
         Body: buffer,
         ACL: 'public-read',
         ContentEncoding: 'base64',
-        ContentType: 'image/jpeg',
+        ContentType: 'image/jpeg'
     };        
 
     let putObjectPromise = await s3.upload(params).promise()
@@ -35,7 +35,7 @@ class Uploads {
         Body: buffer,
         ACL: 'public-read',
         ContentEncoding: 'base64',
-        ContentType: 'audio/wav',
+        ContentType: 'audio/wav'
     };        
 
     let putObjectPromise = await s3.upload(params).promise()
@@ -54,7 +54,7 @@ class Uploads {
         Body: buffer,
         ACL: 'public-read',
         ContentEncoding: 'base64',
-        ContentType: 'video/mp4',
+        ContentType: 'video/mp4'
     };        
 
     let putObjectPromise = await s3.upload(params).promise()

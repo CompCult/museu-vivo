@@ -82,7 +82,7 @@ router.put('/:mission_id', function(req, res) {
     if (req.body.image) {
       var date = new Date();
       var timeStamp = date.toLocaleString(); 
-      Uploads.uploadFile('image', req.body.image, req.body._user.toString(), timeStamp);
+      Uploads.uploadFile(req.body.image, req.body._user.toString(), timeStamp);
 
       var filename = req.body._user.toString() + timeStamp + '.jpg'; 
       missionAnswer.image = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
@@ -108,7 +108,7 @@ router.put('/:mission_id', function(req, res) {
     if (req.body.location_lng) missionAnswer.location_lng = req.body.location_lng;
     if (req.body.status) {
       missionAnswer.status = req.body.status;
-      if (status == "Aprovado") {
+      if (req.body.status == "Aprovado") {
         Mission.findById(missionAnswer._mission, function(err, mission) {
           if (mission) {
             recompenseUser(missionAnswer._user, mission.points);

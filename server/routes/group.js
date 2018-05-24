@@ -45,6 +45,7 @@ router.post('/email', async function(req, res) {
   }
 
   Promise.all(promises).then(function(results) {
+    
     res.status(200).json(results);
   });
 });
