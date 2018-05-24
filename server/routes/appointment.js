@@ -10,10 +10,16 @@ router.get('/', function(req, res) {
     if (err) {
       res.status(400).send(err);
     } else {
+      let date  = new Date();
+      
+      results = appointments.filter(function(appointment) {
+        let start = new Date(appointment.start_date);
+        let end   = new Date(appointment.end_date);
 
-      result = appointments.filter(); 
+        return (start.toLocaleString() < date.toLocaleString() && end.toLocaleString() > date.toLocaleString());
+      }); 
 
-      res.status(200).json(result);
+      res.status(200).json(results);
     }
   });
 });
