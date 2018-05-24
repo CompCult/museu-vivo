@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var User = require('../models/user.js');
+var Group = require('../models/group.js');
 var Quiz = require('../models/quiz.js');
 var QuizAnswer = require('../models/quiz_answer.js');
 
@@ -34,6 +35,7 @@ var inject_data = async function(answer) {
 
   let user_obj = await User.findById(user_id).exec();
   let quiz_obj = await Quiz.findById(quiz_id).exec();
+  let group_id = await Group.findById(group_id).exec();
 }
 
 //Find by params
