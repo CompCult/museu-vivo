@@ -10,7 +10,10 @@ router.get('/', function(req, res) {
     if (err) {
       res.status(400).send(err);
     } else {
-      res.status(200).json(appointments);
+
+      result = appointments.filter(); 
+
+      res.status(200).json(result);
     }
   });
 });
@@ -42,6 +45,7 @@ router.get('/:appointment_id', function(req, res) {
 //Create
 router.post('/', function(req, res) {
   var appointment         = new Appointment();
+  appointment._user       = req.body._user;
   appointment.name        = req.body.name;
   appointment.description = req.body.description;
   appointment.place       = req.body.place;
