@@ -1,7 +1,7 @@
 var nodeMailer  = require('nodemailer');
 
 class Mailer {
-    static sendMail(email, content) {
+    static sendMail(email, author, content) {
         var transporter = nodeMailer.createTransport({
             host: 'smtp.gmail.com',
             port: 465,
@@ -35,6 +35,14 @@ class Mailer {
 
             transporter.close(); // shut down the connection pool, no more messages
         });
+    }
+
+    static sendToAll(mails, author, message) {
+        for (var i = 0; i < mails.length; i++) {
+            let mail = mails[i];
+
+            sendMail(mail, author, message);
+        }
     }
 }
 

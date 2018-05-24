@@ -1,8 +1,11 @@
 var express = require('express');
 var router = express.Router();
 
+var User = require('../models/user.js');
 var Group = require('../models/group.js');
+var Mailer = require('../mailer.js');
 var GroupMember = require('../models/group_member.js');
+
 
 //Index
 router.get('/', function(req, res) {
@@ -29,13 +32,27 @@ router.get('/query/fields', function(req, res) {
 });
 
 //Send mail to group
-router.post('/email', function(req, res) {
-  let group = req.query._group;
-  let message = req.query.message;
+router.post('/email', async function(req, res) {
+  let group_id = req.body._group;
+  let author = req.body._user;
+  let message = req.body.message;
 
+  try {
+    members = await GroupMember.find({ _group: group_id }).exec();
+    promises = members.map(getMemberEmail);
+  } catch (err) {
+    res.status(400).send(err);
+  }
 
-
+  Promise.all(promises).then(function(results) {
+    res.status(200).json(results);
+  });
 });
+
+var getMemberEmail = async function(member) {
+  let user_obj = await User.findById(member._user).exec();
+  return user_obj.email;
+}
 
 //Create
 router.post('/', function(req, res) {
