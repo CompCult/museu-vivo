@@ -33,7 +33,7 @@ router.post('/', function(req, res) {
   var tree              = new Tree();
   tree._user            = req.body._user;
   tree._type            = req.body._type;
-  tree._request_id      = req.body._request_id;
+  tree._request         = req.body._request;
   tree.name             = req.body.name;
   tree.location_lat     = req.body.location_lat;
   tree.location_lng     = req.body.location_lng;
@@ -53,7 +53,7 @@ router.put('/:tree_id', function(req, res) {
   Tree.findById(req.params.tree_id, function(err, tree) {
     if (req.body._user) tree._user           	    = req.body._user;
   	if (req.body._type) tree._type            		= req.body._type;
-    if (req.body._request_id) tree._request_id    = req.body._request_id;
+    if (req.body._request) tree._request          = req.body._request;
   	if (req.body.name) tree.name             			= req.body.name;
   	if (req.body.location_lat) tree.location_lat  = req.body.location_lat;
     if (req.body.location_lng) tree.location_lng  = req.body.location_lng;
