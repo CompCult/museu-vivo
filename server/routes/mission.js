@@ -148,7 +148,7 @@ router.put('/:mission_id', function(req, res) {
       if (err) {
         res.status(400).send(err);
       } else {
-        res.status(200).send(mission._id);
+        res.status(200).send(mission);
       }
     });
   });
