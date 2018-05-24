@@ -10,7 +10,10 @@ var Mission = new Schema({
   secret_code: String,
   is_public: Boolean,
   is_grupal: Boolean,
-  single_answer: Boolean,
+  single_answer: {
+    type: Boolean,
+    default: true
+  },
   has_image: Boolean,
   has_audio: Boolean,
   has_video: Boolean,

@@ -9,7 +9,10 @@ var Quiz = new Schema({
   points: Number,
   secret_code: String,
   is_public: Boolean,
-  single_answer: Boolean,
+  single_answer: {
+    type: Boolean,
+    default: true
+  },
   alternative_a: String,
   alternative_b: String,
   alternative_c: String,

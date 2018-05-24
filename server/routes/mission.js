@@ -32,12 +32,34 @@ router.get('/query/fields', function(req, res) {
 
 //public?user_id
 router.get('/public', function(req, res) {
-  Mission.find({}, function(err, mission) {
+  Mission.find({ is_public: true }, async function(err, missions) {
     if (err) {
       res.status(400).send(err);
     } else {
-      res.status(200).json(mission);
+      var result = []
+      let date = new Date();
+
+      for (var i = 0; i < missions.length; i++) {
+        let mission = missions[i];
+        let end_time = new Date(mission.end_time);
+        let in_time = end_time.toLocaleString() > date.toLocaleString();
+
+        if (mission.single_answer) {
+          console.log('single answer');
+          await wasMissionAnswered(mission._id, req.query.user_id).then((answered) => {
+            if (!answered && in_time) {
+              console.log('single answer not answered and in time');
+              result.push(mission);
+            }
+          });
+        } else if (!mission.single_answer && in_time){
+          console.log('not single answer and in time');
+          result.push(mission);
+        }
+      }
     }
+
+    res.status(200).send(result);
   });
 });
 

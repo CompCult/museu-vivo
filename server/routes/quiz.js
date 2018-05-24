@@ -18,12 +18,31 @@ router.get('/', function(req, res) {
 
 //public?user_id
 router.get('/public', function(req, res) {
-  Quiz.find({}, function(err, quizzes) {
+  Quiz.find({ is_public: true }, async function(err, quizzes) {
     if (err) {
       res.status(400).send(err);
     } else {
-      res.status(200).json(quizzes);
+      var result = []
+      let date = new Date();
+
+      for (var i = 0; i < quizzes.length; i++) {
+        let quiz = quizzes[i];
+        let end_time = new Date(quiz.end_time);
+        let in_time = end_time.toLocaleString() > date.toLocaleString();
+
+        if (quiz.single_answer) {
+          await wasQuizAnswered(quiz._id, req.query.user_id).then((answered) => {
+            if (!answered && in_time) {
+              result.push(quiz);
+            }
+          });
+        } else if (!quiz.single_answer && in_time){
+          result.push(quiz);
+        }
+      }
     }
+
+    res.status(200).send(result);
   });
 });
 
