@@ -35,7 +35,7 @@ var inject_data = async function(answer) {
 
   let user_obj = await User.findById(user_id).exec();
   let quiz_obj = await Quiz.findById(quiz_id).exec();
-  let group_id = await Group.findById(group_id).exec();
+  let group_obj = await Group.findById(group_id).exec();
 }
 
 //Find by params
