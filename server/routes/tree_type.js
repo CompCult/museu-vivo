@@ -37,9 +37,9 @@ router.post('/', function(req, res) {
   if (req.body.photo) {
     var date = new Date();
     var timeStamp = date.toLocaleString(); 
-    Uploads.uploadFile(req.body.photo, req.body._user.toString(), timeStamp);
+    Uploads.uploadFile(req.body.photo, 'tree-type', timeStamp);
 
-    var filename = req.body._user.toString() + timeStamp + '.jpg'; 
+    var filename = 'tree-type' + timeStamp + '.jpg'; 
     post.photo = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
   }
 
