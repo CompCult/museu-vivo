@@ -75,7 +75,7 @@ router.post('/', function(req, res) {
 
 // Update
 router.put('/:mission_id', function(req, res) {
-  MissionAnswer.findById(req.params.mission_id, function(err, mission) {
+  MissionAnswer.findById(req.params.mission_id, function(err, missionAnswer) {
     if (req.body._user) missionAnswer._user             = req.body._user;
     if (req.body._mission) missionAnswer._mission       = req.body._mission;
     if (req.body._group) missionAnswer._group           = req.body._group;

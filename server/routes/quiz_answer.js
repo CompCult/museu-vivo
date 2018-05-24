@@ -11,10 +11,24 @@ router.get('/', function(req, res) {
     if (err) {
       res.status(400).send(err);
     } else {
-      res.status(200).json(answers);
+      let promises;
+
+      try {
+        promises = answers.map(inject_data);
+      } catch (err) {
+        res.status(400).send(err); 
+      }
+
+      Promise.all(promises).then(function(results) {
+          res.status(200).json(results);
+      });
     }
   });
 });
+
+var inject_data = function(answer) {
+
+}
 
 //Find by params
 router.get('/query/fields', function(req, res) {
