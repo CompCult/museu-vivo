@@ -29,6 +29,13 @@ router.get('/query/fields', function(req, res) {
   });
 });
 
+//Send mail to group
+router.post('/email', function(req, res) {
+  let group = req.query._group;
+  let message = req.query.message;
+
+});
+
 //Create
 router.post('/', function(req, res) {
   var group              = new Group();
