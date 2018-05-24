@@ -12,7 +12,10 @@ var AppointmentRequest = new Schema({
     type: Number,
     ref: './appointment.js'
   },
-  status: String,
+  status: {
+    type: String,
+    enum: ['Aprovado','Rejeitado','Pendente']
+  },
   message: String,
   updated_at: Date,
   created_at: {

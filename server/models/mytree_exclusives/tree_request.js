@@ -12,7 +12,10 @@ var TreeRequest = new Schema({
     ref: '../tree_type.js'
   },
   tree_name: String,
-  status: String,
+  status: {
+    type: String,
+    enum: ['Aprovado','Rejeitado','Pendente']
+  },
   location_lat: String, 
   location_lng: String,
   quantity: Number,

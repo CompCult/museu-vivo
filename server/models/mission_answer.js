@@ -16,7 +16,10 @@ var MissionAnswer = new Schema({
     type: Number,
     ref: './group.js'
   },
-  status: String, //Pendente, aprovado, inválido
+  status: {
+    type: String,
+    enum: ['Aprovado','Rejeitado','Pendente']
+  }
   image: String,
   audio: String,
   video: String,

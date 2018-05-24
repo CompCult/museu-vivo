@@ -51,7 +51,6 @@ var verifyAnswer = function(answer) {
   Quiz.findById(answer._quiz, function(err, quiz) {
     if (quiz) {
       if(!quiz.correct_answer || (quiz.correct_answer && quiz.correct_answer == answer.answer)) {
-        console.log('hellow')
         recompenseUser(answer._user, quiz.points);
 
         answer.approved = true;

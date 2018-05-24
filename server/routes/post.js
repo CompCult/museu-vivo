@@ -7,7 +7,7 @@ var Uploads = require('../upload.js');
 
 //Index
 router.get('/', function(req, res) {
-  Post.find({}, function(err, posts) {
+  Post.find({}).sort({created_at: -1}, function(err, posts) {
     if (err) {
       res.status(400).send(err);
     } else {
