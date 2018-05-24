@@ -11,12 +11,12 @@ router.get('/', function(req, res) {
       res.status(400).send(err);
     } else {
       let date  = new Date();
-      
+
       results = appointments.filter(function(appointment) {
         let start = new Date(appointment.start_date);
         let end   = new Date(appointment.end_date);
 
-        return (start.toLocaleString() < date.toLocaleString() && end.toLocaleString() > date.toLocaleString());
+        return (start.toLocaleString() <= date.toLocaleString() && end.toLocaleString() >= date.toLocaleString());
       }); 
 
       res.status(200).json(results);
