@@ -8,10 +8,7 @@ var Tree = new Schema({
     type: Number, 
     ref: '../user.js' 
   }, 
-  _request: { 
-    type: Number, 
-    ref: '../tree_request.js' 
-  },
+  _request: String,
   _type: { 
     type: Number,
     ref: '../tree_type.js'

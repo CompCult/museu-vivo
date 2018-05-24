@@ -20,21 +20,32 @@ router.get('/', function(req, res) {
 
       Promise.all(promises).then(function(results) {
           res.status(200).json(results);
-      })
+      });
+    }
+  });
+});
+
+//Show
+router.get('/:tree_id', function(req, res) {
+  Tree.findById(req.params.tree_id, async function(err, tree) {
+    if (err) {
+      res.status(400).send(err);
+    } else {
+      let tree_with_request = await inject_request(tree);
+
+      res.status(200).json(tree_with_request);
     }
   });
 });
 
 var inject_request = async function(tree) {
     let request_id = tree._request;
-    let request_obj = await get_request_obj(request_id);
     let tree_with_request = tree;
+    let request_obj;
+
+    request_obj = await TreeRequest.findById(request_id).exec();
     tree_with_request._request = request_obj;
     return tree_with_request;
-}
-
-var get_request_obj = async function(r_id) {
-    return TreeRequest.findById(r_id).exec();
 }
 
 //Find by params
@@ -45,12 +56,17 @@ router.get('/query/fields', function(req, res) {
     } else if (!trees){
       res.status(404).send("árvore não encontrada");
     } else {
-      console.log(trees);
-      let promises = trees.map(inject_request);
+      let promises;
+
+      try {
+        promises = trees.map(inject_request);
+      } catch (err) {
+        res.status(400).send(err); 
+      }
 
       Promise.all(promises).then(function(results) {
           res.status(200).json(results);
-      })
+      });
     }
   });
 });
