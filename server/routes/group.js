@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-
 var Group = require('../models/group.js');
 var GroupMember = require('../models/group_member.js');
 
@@ -33,6 +32,8 @@ router.get('/query/fields', function(req, res) {
 router.post('/email', function(req, res) {
   let group = req.query._group;
   let message = req.query.message;
+
+
 
 });
 
