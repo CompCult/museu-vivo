@@ -86,7 +86,7 @@ router.put('/:group_id', function(req, res) {
 
 // Delete with post
 router.post('/remove/:group_id', function(req, res) {
-  Group.remove({ _id: req.params.group_id }, function(err) {
+  Group.delete({ _id: req.params.group_id }, function(err) {
     if (err) {
       res.status(400).send(err);
     } else {
@@ -99,7 +99,7 @@ router.post('/remove/:group_id', function(req, res) {
 
 // Delete
 router.delete('/:group_id', function(req, res) {
-  Group.remove({ _id: req.params.group_id }, function(err) {
+  Group.delete({ _id: req.params.group_id }, function(err) {
     if (err) {
       res.status(400).send(err);
     } else {
@@ -111,7 +111,7 @@ router.delete('/:group_id', function(req, res) {
 });
 
 var removeGroupMembers = function(group_id) {
-  GroupMember.remove({ _group: group_id }).exec();
+  GroupMember.deleteMany({ _group: group_id }).exec();
 }
 
 module.exports = router;
