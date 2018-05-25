@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
-
+var User = require('../models/user.js');
+var Appointment = require('../models/appointment.js');
 var AppointmentRequest = require('../models/appointment_request.js');
 
 //Index
@@ -10,10 +11,33 @@ router.get('/', function(req, res) {
     if (err) {
       res.status(400).send(err);
     } else {
-      res.status(200).json(requests);
+      let promises;
+
+      try {
+        promises = requests.map(inject_appointment);
+      } catch (err) {
+        res.status(400).send(err); 
+      }
+
+      Promise.all(promises).then(function(results) {
+          res.status(200).json(results);
+      });
     }
   });
 });
+
+var inject_appointment = async function(request) {
+  let string = JSON.stringify(request);
+  let request_complete = JSON.parse(string);
+
+  let user_obj = await User.findById(request._user).exec();
+  let appointment_obj = await Appointment.findById(request._appointment).exec();
+
+  request_complete._user = user_obj;
+  request_complete._appointment = appointment_obj;
+
+  return request_complete;
+}
 
 //Show
 router.get('/:request_id', function(req, res) {
@@ -34,7 +58,17 @@ router.get('/query/fields', function(req, res) {
     } else if (!event){
       res.status(404).send("Evento não encontrado");
     } else {
-      res.status(200).json(event);
+      let promises;
+
+      try {
+        promises = event.map(inject_appointment);
+      } catch (err) {
+        res.status(400).send(err); 
+      }
+
+      Promise.all(promises).then(function(results) {
+          res.status(200).json(results);
+      });
     }
   });
 });
