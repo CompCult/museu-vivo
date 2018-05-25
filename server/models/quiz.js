@@ -4,6 +4,10 @@ var autoInc   = require('mongoose-sequence')(mongoose);
 
 var Quiz = new Schema({
   _id: Number,
+  _user: { 
+    type: Number, 
+    ref: './user.js' 
+  },
   title: String,
   description: String,
   points: Number,

@@ -4,9 +4,17 @@ var autoInc   = require('mongoose-sequence')(mongoose);
 
 var MissionAnswer = new Schema({
   _id: Number,
-  _user: String,
-  _mission: String,
-  _group: String,
+  _user: { 
+    type: Number, 
+    ref: './user.js' 
+  }, _quiz: { 
+    type: Number, 
+    ref: './quiz.js' 
+  },
+  _group: { 
+    type: Number, 
+    ref: './group.js' 
+  },
   status: {
     type: String,
     enum: ['Aprovado','Rejeitado','Pendente']

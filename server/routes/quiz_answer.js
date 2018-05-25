@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 
 var User = require('../models/user.js');
-var Group = require('../models/group.js');
 var Quiz = require('../models/quiz.js');
 var QuizAnswer = require('../models/quiz_answer.js');
 
@@ -49,10 +48,8 @@ var inject_data = async function(answer) {
 
   let user_obj = await User.findById(answer._user).exec();
   let quiz_obj = await Quiz.findById(answer._quiz).exec();
-  let group_obj = await Group.findById(answer._group).exec();
 
   answer_complete._user = user_obj;
-  answer_complete._group = group_obj;
   answer_complete._quiz = quiz_obj;
 
   return answer_complete;

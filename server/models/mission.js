@@ -5,6 +5,10 @@ var autoInc   = require('mongoose-sequence')(mongoose);
 var Mission = new Schema({
   _id: Number,
   name: String,
+  _user: { 
+    type: Number, 
+    ref: './user.js' 
+  },
   description: String,
   points: Number,
   secret_code: String,

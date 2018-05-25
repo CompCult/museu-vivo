@@ -101,6 +101,7 @@ var wasMissionAnswered = async function(mission, user) {
 router.post('/', function(req, res) {
   var mission              = new Mission();
   mission.name             = req.body.name;
+  mission._user            = req.body._user;
   mission.description      = req.body.description;
   mission.points           = req.body.points;
   mission.secret_code      = generateSecretCode();

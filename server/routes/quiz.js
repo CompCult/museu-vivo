@@ -97,6 +97,7 @@ router.get('/query/fields', function(req, res) {
 router.post('/', function(req, res) {
   var quiz             = new Quiz();
   quiz.title           = req.body.title;
+  quiz._user           = req.body._user;
   quiz.description     = req.body.description;
   quiz.points          = req.body.points;
   quiz.secret_code     = generateSecretCode();
