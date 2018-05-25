@@ -7,9 +7,9 @@ var MissionAnswer = new Schema({
   _user: { 
     type: Number, 
     ref: './user.js' 
-  }, _quiz: { 
+  }, _mission: { 
     type: Number, 
-    ref: './quiz.js' 
+    ref: './mission.js' 
   },
   _group: { 
     type: Number, 

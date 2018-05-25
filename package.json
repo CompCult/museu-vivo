@@ -5,13 +5,13 @@
   },
   "dependencies": {
     "aws-sdk": "^2.1.6",
-    "ejs": "2.x",
     "bcrypt-nodejs": "0.0.3",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.15.0",
     "cookie-parser": "^1.4.1",
     "cors": "^2.8.4",
     "debug": "^2.2.0",
+    "ejs": "2.x",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "moment": "^2.22.0",
@@ -21,6 +21,7 @@
     "nodemailer": "^4.4.2",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
-    "passport-local-mongoose": "^4.0.0"
+    "passport-local-mongoose": "^4.0.0",
+    "pdfmake": "^0.1.36"
   }
 }
