@@ -57,9 +57,9 @@ router.post('/', function(req, res) {
 
   User.findOne({ email: req.body.email}, function(err, user) {
     if (err) {
-      req.status(400).send(err);
+      res.status(400).send(err);
     } else if (!user) {
-      req.status(404).send("Usuário não encontrado")
+      res.status(404).send("Usuário não encontrado");
     } else {
       member._user     = user._id;
       member._group    = req.body._group;
