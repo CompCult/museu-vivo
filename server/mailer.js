@@ -5,7 +5,7 @@ class Mailer {
         var transporter = nodeMailer.createTransport({
             host: 'smtp.gmail.com',
             port: 465,
-            secure: false,
+            secure: true,
             auth: {
                 user: process.env.MAILER_MAIL,
                 pass: process.env.MAILER_PASS
