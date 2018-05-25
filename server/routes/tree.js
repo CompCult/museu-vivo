@@ -40,11 +40,14 @@ router.get('/:tree_id', function(req, res) {
 
 var inject_request = async function(tree) {
     let request_id = tree._request;
-    let tree_with_request = tree;
+    let string = JSON.stringify(tree);
+    let tree_with_request = JSON.parse(string);
     let request_obj;
 
     request_obj = await TreeRequest.findById(request_id).exec();
     tree_with_request._request = request_obj;
+
+    console.log(tree_with_request);
     return tree_with_request;
 }
 
