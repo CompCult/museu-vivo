@@ -40,7 +40,7 @@ router.post('/', function(req, res) {
     Uploads.uploadFile(req.body.photo, 'tree-type', timeStamp);
 
     var filename = 'tree-type' + timeStamp + '.jpg'; 
-    post.photo = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
+    type.photo = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
   }
 
   type.save(function(err) {
@@ -64,7 +64,7 @@ router.put('/:tree_id', function(req, res) {
       Uploads.uploadFile(req.body.photo, req.body._user.toString(), timeStamp);
 
       var filename = req.body._user.toString() + timeStamp + '.jpg'; 
-      post.photo = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
+      type.photo = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
     }
     
     console.log(err);
