@@ -27,6 +27,22 @@ router.get('/', function(req, res) {
   });
 });
 
+//Show
+router.get('/:answer_id', function(req, res) {
+  QuizAnswer.find({ _id: req.params.answer_id }, function(err, answer) {
+    if (err) {
+      res.status(400).send(err);
+    } else if(!answer) {
+      res.status(404).send('Resposta não encontrada');
+    } else {
+      let answer_complete = inject_data(answer);
+
+      res.status(200).send(answer_complete);
+    }
+  });
+});
+
+
 var inject_data = async function(answer) {
   let string = JSON.stringify(answer);
   let answer_complete = JSON.parse(string);
