@@ -34,7 +34,7 @@ router.get('/query/fields', function(req, res) {
 //Send mail to group
 router.post('/email', async function(req, res) {
   let group_id = req.body._group;
-  let author = req.body._user;
+  let author = req.body.author;
   let message = req.body.message;
 
   try {
@@ -45,8 +45,9 @@ router.post('/email', async function(req, res) {
   }
 
   Promise.all(promises).then(function(results) {
-    
-    res.status(200).json(results);
+    Mailer.sendMail(results, author, message);
+
+    res.status(200).json("Enviando mensagens...");
   });
 });
 

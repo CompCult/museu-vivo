@@ -1,16 +1,14 @@
 var nodeMailer  = require('nodemailer');
 
 class Mailer {
-    static sendMail(email, author, content) {
+    static sendMail(email, author, message) {
         var transporter = nodeMailer.createTransport({
             host: 'smtp.gmail.com',
             port: 465,
             secure: true,
             auth: {
-                //process.env.MAILER_MAIL
-                ////process.env.MAILER_PASS
-                user: "ufcgcompcult@gmail.com",
-                pass: "Atelier1516@"
+                user: process.env.MAILER_MAIL,
+                pass: process.env.MAILER_PASS
             },
             tls: {
             // do not fail on invalid certs
@@ -21,7 +19,7 @@ class Mailer {
         var mailOptions = {
             from: "Equipe Minha Arvore <ufcgcompcult@gmail.com>", // sender address
             to: email, // list of receivers
-            subject: author, // Subject line
+            subject: "Grupos - Mensagem de " + author, // Subject line
             text: message, // plaintext body
             html: message
         }
@@ -35,14 +33,6 @@ class Mailer {
 
             transporter.close(); // shut down the connection pool, no more messages
         });
-    }
-
-    static sendToAll(mails, author, message) {
-        for (var i = 0; i < mails.length; i++) {
-            let mail = mails[i];
-
-            sendMail(mail, author, message);
-        }
     }
 }
 
