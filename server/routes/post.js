@@ -11,10 +11,31 @@ router.get('/', function(req, res) {
   .catch((err) => {
       res.status(400).send(err);
   })
-  .then((result) => {
-      res.status(200).json(result);
+  .then((posts) => {
+      let promises;
+
+      try {
+        promises = posts.map(get_author_info);
+      } catch (err) {
+        res.status(400).send(err); 
+      }
+
+      Promise.all(promises).then(function(results) {
+          res.status(200).json(results);
+      });
   });
 });
+
+var get_author_info = async function(post) {
+  let string = JSON.stringify(post);
+  let post_complete = JSON.parse(string);
+  let user_obj = await User.findById(post._user).exec();
+
+  post_complete.author_name = user_obj.name;
+  post_complete.author_photo = user_obj.picture;
+
+  return post_complete;
+}
 
 //Find by params
 router.get('/query/fields', function(req, res) {
@@ -24,7 +45,17 @@ router.get('/query/fields', function(req, res) {
     } else if (!post){
       res.status(404).send("Post não encontrado");
     } else {
-      res.status(200).json(post);
+      let promises;
+
+      try {
+        promises = posts.map(get_author_info);
+      } catch (err) {
+        res.status(400).send(err); 
+      }
+
+      Promise.all(promises).then(function(results) {
+          res.status(200).json(results);
+      });
     }
   });
 });
@@ -54,20 +85,11 @@ router.post('/', function(req, res) {
   };
   //if (req.body.video) post.video             = req.body.video;
 
-  User.findById(req.body._user, function(err, user) {
-    if (!user || err) {
-      res.status(400).send("Usuário incorreto!");
+  post.save(function(err) {
+    if (err) {
+      res.status(400).send(err);
     } else {
-      post.author_name  = user.name; 
-      post.author_photo = user.picture;
-
-      post.save(function(err) {
-        if (err) {
-          res.status(400).send(err);
-        } else {
-          res.status(200).send(post);
-        }
-      });
+      res.status(200).send(post);
     }
   });
 });
