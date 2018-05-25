@@ -47,7 +47,6 @@ var inject_request = async function(tree) {
     request_obj = await TreeRequest.findById(request_id).exec();
     tree_with_request._request = request_obj;
 
-    console.log(tree_with_request);
     return tree_with_request;
 }
 

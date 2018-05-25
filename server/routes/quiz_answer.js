@@ -28,25 +28,39 @@ router.get('/', function(req, res) {
 });
 
 var inject_data = async function(answer) {
-  let user_id = answer._user;
-  let quiz_id = answer._quiz;
-  let group_id = answer._group;
-  let answer_complete = answer;
+  let string = JSON.stringify(answer);
+  let answer_complete = JSON.parse(string);
 
-  let user_obj = await User.findById(user_id).exec();
-  let quiz_obj = await Quiz.findById(quiz_id).exec();
-  let group_obj = await Group.findById(group_id).exec();
+  let user_obj = await User.findById(answer._user).exec();
+  let quiz_obj = await Quiz.findById(answer._quiz).exec();
+  let group_obj = await Group.findById(answer._group).exec();
+
+  answer_complete._user = user_obj;
+  answer_complete._group = group_obj;
+  answer_complete._quiz = quiz_obj;
+
+  return answer_complete;
 }
 
 //Find by params
 router.get('/query/fields', function(req, res) {
-  QuizAnswer.find(req.query, function(err, answer) {
+  QuizAnswer.find(req.query, function(err, answers) {
     if (err) {
       res.status(400).send(err);
     } else if (!answer){
       res.status(404).send("Resposta do quiz não encontrada");
     } else {
-      res.status(200).json(answer);
+      let promises;
+
+      try {
+        promises = answers.map(inject_data);
+      } catch (err) {
+        res.status(400).send(err); 
+      }
+
+      Promise.all(promises).then(function(results) {
+          res.status(200).json(results);
+      });
     }
   });
 });
