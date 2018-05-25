@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
+var User = require('../models/user.js');
+var Group = require('../models/group.js');
 var Mission = require('../models/mission.js');
 var MissionAnswer = require('../models/mission_answer.js');
 var Uploads = require('../upload.js');
@@ -11,10 +13,51 @@ router.get('/', function(req, res) {
     if (err) {
       res.status(400).send(err);
     } else {
-      res.status(200).json(missions);
+      let promises;
+
+      try {
+        promises = missions.map(inject_mission_data);
+      } catch (err) {
+        res.status(400).send(err); 
+      }
+
+      Promise.all(promises).then(function(results) {
+          res.status(200).json(results);
+      });
     }
   });
 });
+
+//Show
+router.get('/:answer_id', function(req, res) {
+  MissionAnswer.find({ _id: req.params.answer_id }, async function(err, answer) {
+    if (err) {
+      res.status(400).send(err);
+    } else if(!answer) {
+      res.status(404).send('Resposta não encontrada');
+    } else {
+      let answer_complete = await inject_mission_data(answer);
+
+      res.status(200).send(answer_complete);
+    }
+  });
+});
+
+
+var inject_mission_data = async function(answer) {
+  let string = JSON.stringify(answer);
+  let answer_complete = JSON.parse(string);
+
+  let user_obj = await User.findById(answer._user).exec();
+  let mission_obj = await Mission.findById(answer._mission).exec();
+  let group_obj = await Group.findById(answer._group).exec();
+
+  answer_complete._user = user_obj;
+  answer_complete._group = group_obj;
+  answer_complete._mission = mission_obj;
+
+  return answer_complete;
+}
 
 //Find by params
 router.get('/query/fields', function(req, res) {
