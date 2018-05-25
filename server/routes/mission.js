@@ -136,7 +136,6 @@ router.put('/:mission_id', function(req, res) {
     if (req.body.is_grupal) mission.is_grupal             = req.body.is_grupal;
     if (req.body.single_answer) mission.single_answer     = req.body.single_answer;
     if (req.body.has_image) mission.has_image             = req.body.has_image;
-    if (req.body.has_image) mission.has_image             = req.body.has_image;
     if (req.body.has_audio) mission.has_audio             = req.body.has_audio;
     if (req.body.has_video) mission.has_video             = req.body.has_video;
     if (req.body.has_text) mission.has_text               = req.body.has_text;
