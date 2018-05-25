@@ -41,6 +41,7 @@ router.get('/public', function(req, res) {
 
       for (var i = 0; i < missions.length; i++) {
         let mission = missions[i];
+        console.log(mission);
         let end_time = new Date(mission.end_time);
         let in_time = end_time.toLocaleString() > date.toLocaleString();
 
