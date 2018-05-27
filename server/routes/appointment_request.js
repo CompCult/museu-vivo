@@ -98,7 +98,7 @@ router.put('/:request_id', function(req, res) {
     if (req.body.status) {
       request.status     = req.body.status;
 
-      request.updated_at = Date().now();
+      request.updated_at = new Date();
     }
     if (req.body.message) request.message = req.body.message;
 
