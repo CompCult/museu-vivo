@@ -61,9 +61,9 @@ router.put('/:tree_id', function(req, res) {
     if (req.body.photo) {
       var date = new Date();
       var timeStamp = date.toLocaleString(); 
-      Uploads.uploadFile(req.body.photo, req.body._user.toString(), timeStamp);
+      Uploads.uploadFile(req.body.photo, "tree_type", timeStamp);
 
-      var filename = req.body._user.toString() + timeStamp + '.jpg'; 
+      var filename = "tree_type" + timeStamp + '.jpg'; 
       type.photo = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
     }
     
