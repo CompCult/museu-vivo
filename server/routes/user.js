@@ -70,7 +70,7 @@ router.post('/register', function(req, res) {
 });
 
 //Trade password
-router.get('/recovery/password_edit', function(req, res) {
+router.post('/recovery/password_edit', function(req, res) {
   User.findOne({ email: req.query.email}, function(err, user) {
     if (err) {
       res.status(400).send(err);
