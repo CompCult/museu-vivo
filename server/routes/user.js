@@ -70,8 +70,8 @@ router.post('/register', function(req, res) {
 });
 
 //Trade password
-router.get('/password_edit/:email', function(req, res) {
-  User.findOne({ email: req.params.email}, function(err, user) {
+router.get('/recovery/password_edit', function(req, res) {
+  User.findOne({ email: req.query.email}, function(err, user) {
     if (err) {
       res.status(400).send(err);
     } else if (!user){
@@ -99,6 +99,18 @@ router.get('/password_edit/:email', function(req, res) {
 router.post('/recovery', function(req, res) {
   let user_email = req.body.email;
   let new_password = req.body.new_password;
+  //http://minha-arvore.herokuapp.com
+  let html = "<div style='width:90%; margin-left:auto; margin-right:auto; margin-bottom: 20px; border: 1px solid transparent; border-radius: 4px;'>" +
+            "<div style='font-family: Arial; border-color: #502274;'>" +
+            "<div style='vertical-align:middle; text-align:justify;'>" +
+            "<p style='text-align:left;'>Olá!</p>" + 
+            "<p>Você está recebendo esse e-mail que foi requisitada a alteração da sua senha de acesso. Se você não fez nenhuma requisição, pode simplesmente ignorar este e-mail.</p>" +
+              "<p>Para confirmar a alteração da senha, clique no botão abaixo:</p>" + 
+                "<form action ='https://localhost:3000/users/recovery/password_edit?email=" + req.body.email + "' method='post'>" +
+                "<input type='submit' value='Confirmar alteração de senha' style='margin-top:3px; margin-bottom:3px; background: #502274; margin-bottom: 3px; padding: 10px; text-align: center; color: white; font-weight: bold; border: 1px solid #502274;'></form>" +
+                "<p style='text-align:left;' >Bom uso,</p>" + 
+                "<p style='text-align:left;' ><b>Equipe Minha Árvore!</b></p>" + 
+                "</div></div></div>"
 
   User.findOne({ email: user_email }, function(err, user) {
     if (err) {
@@ -115,7 +127,7 @@ router.post('/recovery', function(req, res) {
             if (err) {
               return res.status(400).send(err);
             } else {
-              Mailer.sendMail(user_email, 'Recuperação de senha', '<a href="https://minha-arvore.herokuapp.com/users/' + user_email + '"></a>');
+              Mailer.sendMail(user_email, 'Recuperação de senha', html);
               res.status(200).send(user);
             }
           });
