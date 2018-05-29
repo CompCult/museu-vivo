@@ -121,7 +121,7 @@ router.post('/recovery', function(req, res) {
       });
     }
   }); 
-}
+});
 
 // Update with post
 router.post('/update/:user_id', function(req, res) {
