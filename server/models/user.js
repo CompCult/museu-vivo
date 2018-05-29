@@ -15,6 +15,7 @@ var User = new Schema({
   type: String,
   institution: String,
   password: String,
+  new_password: String,
   birth: Date,
   sex: String,
   phone: String,

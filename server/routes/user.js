@@ -68,6 +68,61 @@ router.post('/register', function(req, res) {
   });
 });
 
+//Trade password
+router.get('/edit_pass', function(req, res) {
+  User.findOne({ email: req.query.email}, function(err, user) {
+    if (err) {
+      res.status(400).send(err);
+    } else if (!user){
+      res.status(404).send("Usuário não encontrado");
+    } else {
+      if (user.new_password) {
+        user.password = user.new_password;
+        user.new_password = null;
+
+        user.save(function(err) {
+          if (err) {
+            return res.status(403).send(err);
+          } else {
+            return res.status(200).send('Senha atualizada!');
+          }
+        });
+      } else {
+          return res.status(404).send('Nova senha não encontrada, tente novamente.');
+      }
+    }
+  });
+});
+
+//Recover pasword
+router.post('/recovery', function(req, res) {
+  let user_email = req.body.email;
+  let new_password = req.body.new_password;
+
+  User.findOne({ email: user_email }, function(err, user) {
+    if (err) {
+      res.status(400).send(err);
+    } if (!user) {
+      res.status(400).send(err);
+    } else {
+      bcrypt.hash(req.body.new_password, 10, function(err, hash) {
+        if (err) {
+          res.status(400).send(err);
+        } else {
+          user.new_password = hash;
+          user.save(function(err) {
+            if (err) {
+              return res.status(400).send(err);
+            } else {
+              res.status(200).send(user);
+            }
+          });
+        }
+      });
+    }
+  }); 
+}
+
 // Update with post
 router.post('/update/:user_id', function(req, res) {
   User.findById(req.params.user_id, function(err, user) {
