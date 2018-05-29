@@ -7,7 +7,11 @@ var TreeType = new Schema({
   name: String,
   description: String,
   ammount_available: Number,
-  photo: String
+  photo: String,
+  _places: [{ 
+    type: Number, 
+    ref: './place.js' 
+  }]
 });
 
 TreeType.plugin(autoInc, {id: "type_id"});
