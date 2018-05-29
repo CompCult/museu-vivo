@@ -4,6 +4,7 @@ var bcrypt  = require('bcryptjs');
 
 var User = require('../models/user.js');
 var Uploads = require('../upload.js');
+var Mailer = require('../mailer.js');
 
 //Index
 router.get('/', function(req, res) {
@@ -69,8 +70,8 @@ router.post('/register', function(req, res) {
 });
 
 //Trade password
-router.get('/edit_pass', function(req, res) {
-  User.findOne({ email: req.query.email}, function(err, user) {
+router.get('/password_edit/:email', function(req, res) {
+  User.findOne({ email: req.params.email}, function(err, user) {
     if (err) {
       res.status(400).send(err);
     } else if (!user){
@@ -114,6 +115,7 @@ router.post('/recovery', function(req, res) {
             if (err) {
               return res.status(400).send(err);
             } else {
+              Mailer.sendMail(user_email, 'Recuperação de senha', '<a href="https://minha-arvore.herokuapp.com/users/' + user_email + '"></a>');
               res.status(200).send(user);
             }
           });

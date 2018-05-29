@@ -1,7 +1,7 @@
 var nodeMailer  = require('nodemailer');
 
 class Mailer {
-    static sendMail(email, author, message) {
+    static sendMail(email, subject, message) {
         var transporter = nodeMailer.createTransport({
             host: 'smtp.gmail.com',
             port: 465,
@@ -19,7 +19,7 @@ class Mailer {
         var mailOptions = {
             from: "Equipe Minha Arvore <ufcgcompcult@gmail.com>", // sender address
             to: email, // list of receivers
-            subject: "Grupos - Mensagem de " + author, // Subject line
+            subject: subject, // Subject line
             text: message, // plaintext body
             html: message
         }

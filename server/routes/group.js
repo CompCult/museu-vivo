@@ -45,7 +45,7 @@ router.post('/email', async function(req, res) {
   }
 
   Promise.all(promises).then(function(results) {
-    Mailer.sendMail(results, author, message);
+    Mailer.sendMail(results, "Grupos - Mensagem de " + author, message);
 
     res.status(200).json("Enviando mensagens...");
   });
