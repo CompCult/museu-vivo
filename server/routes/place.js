@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
+var Place = require('../models/place.js');
+
 //Index
 router.get('/', function(req, res) {
   Place.find({}).catch((err) => {

@@ -59,7 +59,7 @@ router.put('/:tree_id', function(req, res) {
 	  if (req.body.name) type.name             			         = req.body.name;
 	  if (req.body.description) type.description             = req.body.description;
     if (req.body.ammount_available) type.ammount_available = req.body.ammount_available;
-    if (req.body._places) type._places.push(req.body._places);
+    if (req.body._places) type._places                     = type._places.concat(req.body._places);
     if (req.body.photo) {
       var date = new Date();
       var timeStamp = date.toLocaleString(); 
@@ -85,7 +85,7 @@ router.put('/:tree_id', function(req, res) {
 router.put('/remove/:tree_id', function(req, res) {
   TreeType.findById(req.params.tree_id, function(err, type) {
     if (req.body._places) {
-      var index = type._places.indexOf(5);
+      var index = type._places.indexOf(req.body._places);
       if (index > -1) {
         type._places.splice(index, 1);
       }
