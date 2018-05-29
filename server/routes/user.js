@@ -46,6 +46,7 @@ router.post('/register', function(req, res) {
   var user      = new User();
   user.name     = req.body.name;
   user.email    = req.body.email;
+  user.type     = req.body.type;
 
   bcrypt.hash(req.body.password, 10, function(err, hash) {
     if (err) {
