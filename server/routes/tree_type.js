@@ -2,18 +2,44 @@ var express = require('express');
 var router = express.Router();
 
 var TreeType = require('../models/mytree_exclusives/tree_type.js');
+var Place = require('../models/place.js');
 var Uploads = require('../upload.js');
 
 //Index
 router.get('/', function(req, res) {
-  TreeType.find({}, function(err, trees) {
+  TreeType.find({}, async function(err, trees) {
     if (err) {
       res.status(400).send(err);
     } else {
-      res.status(200).json(trees);
+      final_result = []
+
+      for (var i = 0; i < trees.length; i++) {
+        let promises;
+        let places = trees[i]._places;
+
+        try {
+          promises = await places.map(inject_place);
+        } catch (err) {
+          res.status(400).send(err); 
+        }
+
+        await Promise.all(promises).then(function(results) {
+          let string = JSON.stringify(trees[i]);
+          let final_tree = JSON.parse(string);
+          final_tree._places = results;
+
+          final_result.push(final_tree);
+
+          if(i == trees.length -1) res.status(200).json(final_result);
+        });
+      }
     }
   });
 });
+
+inject_place = function(place) {
+  return Place.findById(place).exec();
+}
 
 //Find by params
 router.get('/query/fields', function(req, res) {
