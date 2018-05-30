@@ -43,13 +43,34 @@ inject_place = function(place) {
 
 //Find by params
 router.get('/query/fields', function(req, res) {
-  TreeType.find(req.query, function(err, type) {
+  TreeType.find(req.query, async function(err, trees) {
     if (err) {
       res.status(400).send(err);
-    } else if (!type){
+    } else if (!trees){
       res.status(404).send("Tipo não encontrado");
     } else {
-      res.status(200).json(type);
+      final_result = []
+
+      for (var i = 0; i < trees.length; i++) {
+        let promises;
+        let places = trees[i]._places;
+
+        try {
+          promises = await places.map(inject_place);
+        } catch (err) {
+          res.status(400).send(err); 
+        }
+
+        await Promise.all(promises).then(function(results) {
+          let string = JSON.stringify(trees[i]);
+          let final_tree = JSON.parse(string);
+          final_tree._places = results;
+
+          final_result.push(final_tree);
+
+          if(i == trees.length -1) res.status(200).json(final_result);
+        });
+      };
     }
   });
 });
