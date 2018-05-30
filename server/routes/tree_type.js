@@ -82,14 +82,7 @@ router.post('/', function(req, res) {
   type.description        = req.body.description;
   type.ammount_available  = req.body.ammount_available;
   type._places            = req.body._places;
-  if (req.body.photo) {
-    var date = new Date();
-    var timeStamp = date.toLocaleString(); 
-    Uploads.uploadFile(req.body.photo, 'tree-type', timeStamp);
-
-    var filename = 'tree-type' + timeStamp + '.jpg'; 
-    type.photo = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
-  }
+  if (req.body.photo) type.photo = req.body.photo;
 
   type.save(function(err) {
     if (err) {
@@ -107,16 +100,8 @@ router.put('/:tree_id', function(req, res) {
 	  if (req.body.description) type.description             = req.body.description;
     if (req.body.ammount_available) type.ammount_available = req.body.ammount_available;
     if (req.body._places) type._places                     = type._places.concat(req.body._places);
-    if (req.body.photo) {
-      var date = new Date();
-      var timeStamp = date.toLocaleString(); 
-      Uploads.uploadFile(req.body.photo, "tree_type", timeStamp);
-
-      var filename = "tree_type" + timeStamp + '.jpg'; 
-      type.photo = 'https://s3.amazonaws.com/compcult/minhaarvore/' + filename;
-    }
+    if (req.body.photo) type.photo                        = req.body.photo;
     
-    console.log(err);
 
     type.save(function(err) {
       if (err) {
@@ -127,6 +112,7 @@ router.put('/:tree_id', function(req, res) {
     });
   });
 });
+
 
 // Update
 router.put('/remove/:tree_id', function(req, res) {
