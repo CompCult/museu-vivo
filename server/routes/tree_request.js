@@ -61,9 +61,12 @@ router.post('/', function(req, res) {
 
     let xmlHttp = new XMLHttpRequest();
     //+ req.body.location_lat + "," + req.body.location_lng
-    complete_address = xmlHttp.open( "GET", "http://maps.googleapis.com/maps/api/geocode/json?latlng=-7.21768522262573,-35.9105224609375", false);
-
-    console.log(complete_address)
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            console.log(xmlHttp.responseText);
+    }
+    xmlHttp.open("GET", "http://maps.googleapis.com/maps/api/geocode/json?latlng=-7.21768522262573,-35.9105224609375", true); // true for asynchronous 
+    xmlHttp.send(null);
   } else {
     request.sidewalk_size   = req.body.sidewalk_size;
     request.street = req.body.street;
@@ -79,14 +82,14 @@ router.post('/', function(req, res) {
     if (user && (user.request_limit < req.body.quantity)) {
       res.status(400).send('A quantidade pedida ultrapassa o limite do usuário.');
     } else {
-      // request.save(function(err) {
-      //   if (err) {
-      //     res.status(400).send(err);
-      //   } else {
-      //     createTrees(request);
-      //     res.status(200).send(request);
-      //   }
-      // });
+      request.save(function(err) {
+        if (err) {
+          res.status(400).send(err);
+        } else {
+          createTrees(request);
+          res.status(200).send(request);
+        }
+      });
       res.status(200).send(user);
     }
   });

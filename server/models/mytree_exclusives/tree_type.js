@@ -8,8 +8,9 @@ var TreeType = new Schema({
   description: String,
   ammount_available: Number,
   photo: String,
-  _places:  [{
-    type: String
+  _places:  [{ 
+    type: Schema.Types.Mixed,
+    ref: './place.js' 
   }]
 });
 
