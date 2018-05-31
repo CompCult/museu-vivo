@@ -154,4 +154,21 @@ createTrees = function(request) {
   }
 } 
 
+stringAddressValidator = function(street='', number='', neighborhood='', city='', state='', zipcode='') {
+  if ((street || street.lenght > 0) &&
+    (number || number.lenght > 0) &&
+    (neighborhood || neighborhood.lenght > 0) &&
+    (city || city.lenght > 0) &&
+    (state || state.lenght > 0) &&
+    (zipcode || zipcode.lenght > 0)) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+stringAddress = function(street, number, neighborhood, city, state, zipcode) {
+  return street + ', ' + number + " - " + neighborhood + ", " + city + " - " + state + ", " + zipcode + ", " + 'Brasil';
+}
+
 module.exports = router;
