@@ -79,37 +79,35 @@ router.get('/query/fields', function(req, res) {
 });
 
 //Create
-router.post('/', function(req, res) {
+router.post('/', async function(req, res) {
   var quiz_answer         = new QuizAnswer();
   quiz_answer._user       = req.body._user;
   quiz_answer._quiz       = req.body._quiz;
   quiz_answer.answer      = req.body.answer;
-  quiz_answer.approved    = req.body.approved;
+  approved                = await verifyAnswer(quiz_answer._quiz, quiz_answer.answer);
+
+  if (approved !== undefined) {
+    quiz_answer.approved = approved;
+  }
 
   quiz_answer.save(function(err) {
     if (err) {
       res.status(400).send(err);
     } else {
-      verifyAnswer(quiz_answer);
-
       res.status(200).send(quiz_answer);
     }
   });
 });
 
-var verifyAnswer = function(answer) {
-  Quiz.findById(answer._quiz, function(err, quiz) {
-    if (quiz) {
-      if(quiz.correct_answer && quiz.correct_answer == answer.answer) {
-        recompenseUser(answer._user, quiz.points);
-
-        answer.approved = true;
-        answer.save(function(err) {
-          console.log("Resposta correta");
-        });
-      }
-    }
-  });
+var verifyAnswer = async function(quiz_id, answer) {
+  let quiz = await Quiz.findById(quiz_id).exec();
+  
+  if(quiz.correct_answer && quiz.correct_answer == answer) {
+    recompenseUser(answer._user, quiz.points);
+    return true;
+  } else if (quiz.correct_answer && quiz.correct_answer != answer.answer) {
+    return false;
+  } 
 }
 
 var recompenseUser = function(user_id, points) {
@@ -129,7 +127,17 @@ router.put('/:answer_id', function(req, res) {
     if (req.body._user) quiz_answer._user       = req.body._user;
     if (req.body._quiz) quiz_answer._quiz       = req.body._quiz;
     if (req.body.answer) quiz_answer.answer     = req.body.answer;
-    if (req.body.approved) quiz_answer.approved = req.body.approved;
+    if (req.body.approved !== undefined) {
+      quiz_answer.approved = req.body.approved;
+
+      if (req.body.approved) {
+        Quiz.findById(quiz_answer._quiz, function(err, q) {
+          if (q) {
+            recompenseUser(quiz_answer._user, q.points);
+          }
+        });
+      }
+    }
 
     quiz_answer.save(function(err) {
       if (err) {

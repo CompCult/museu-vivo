@@ -127,8 +127,8 @@ router.put('/:quiz_id', function(req, res) {
     if(req.body.title) quiz.title                   = req.body.title;
     if(req.body.description) quiz.description       = req.body.description;
     if(req.body.points) quiz.points                 = req.body.points;
-    if(req.body.is_public) quiz.is_public           = req.body.is_public;
-    if(req.body.single_answer) quiz.single_answer   = req.body.single_answer;
+    if(req.body.is_public !== undefined) quiz.is_public           = req.body.is_public;
+    if(req.body.single_answer !== undefined) quiz.single_answer   = req.body.single_answer;
     if(req.body.alternative_a) quiz.alternative_a   = req.body.alternative_a;
     if(req.body.alternative_b) quiz.alternative_b   = req.body.alternative_b;
     if(req.body.correct_answer) quiz.correct_answer = req.body.correct_answer;
