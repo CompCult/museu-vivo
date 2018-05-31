@@ -84,6 +84,7 @@ router.post('/', function(req, res) {
   quiz_answer._user       = req.body._user;
   quiz_answer._quiz       = req.body._quiz;
   quiz_answer.answer      = req.body.answer;
+  quiz_answer.approved    = req.body.approved;
 
   quiz_answer.save(function(err) {
     if (err) {
@@ -125,9 +126,10 @@ var recompenseUser = function(user_id, points) {
 // Update
 router.put('/:answer_id', function(req, res) {
   QuizAnswer.findById(req.params.answer_id, function(err, quiz_answer) {
-    if (req.body._user) quiz_answer._user   = req.body._user;
-    if (req.body._quiz) quiz_answer._quiz   = req.body._quiz;
-    if (req.body.answer) quiz_answer.answer = req.body.answer;
+    if (req.body._user) quiz_answer._user       = req.body._user;
+    if (req.body._quiz) quiz_answer._quiz       = req.body._quiz;
+    if (req.body.answer) quiz_answer.answer     = req.body.answer;
+    if (req.body.approved) quiz_answer.approved = req.body.approved;
 
     quiz_answer.save(function(err) {
       if (err) {
