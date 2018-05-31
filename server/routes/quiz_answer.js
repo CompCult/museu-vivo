@@ -100,7 +100,7 @@ router.post('/', function(req, res) {
 var verifyAnswer = function(answer) {
   Quiz.findById(answer._quiz, function(err, quiz) {
     if (quiz) {
-      if(!quiz.correct_answer || (quiz.correct_answer && quiz.correct_answer == answer.answer)) {
+      if(quiz.correct_answer && quiz.correct_answer == answer.answer) {
         recompenseUser(answer._user, quiz.points);
 
         answer.approved = true;
