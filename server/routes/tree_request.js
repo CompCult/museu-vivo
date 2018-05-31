@@ -135,23 +135,21 @@ router.delete('/:tree_id', function(req, res) {
 
 //Methods
 createTrees = function(request) {
-  for (i = 0; i < request.quantity; i++) {
-    var tree              = new Tree();
-    tree._user            = request._user;
-    tree._type            = request._type;
-    tree._request         = request._id;
-    tree.name             = request.tree_name;
-    tree.location_lat     = request.location_lat;
-    tree.location_lng     = request.location_lng;
+  var tree              = new Tree();
+  tree._user            = request._user;
+  tree._type            = request._type;
+  tree._request         = request._id;
+  tree.name             = request.tree_name;
+  tree.location_lat     = request.location_lat;
+  tree.location_lng     = request.location_lng;
 
-    tree.save(function(err) {
-      if (err) {
-        console.log('algo deu ruim');
-      } else {
-        console.log('Arvores criadas!');
-      }
-    });
-  }
+  tree.save(function(err) {
+    if (err) {
+      console.log('algo deu ruim');
+    } else {
+      console.log('Arvores criadas!');
+    }
+  });
 } 
 
 stringAddressValidator = function(street='', number='', neighborhood='', city='', state='', zipcode='') {
