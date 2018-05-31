@@ -8,9 +8,8 @@ var TreeType = new Schema({
   description: String,
   ammount_available: Number,
   photo: String,
-  _places: [{ 
-    type: Number, 
-    ref: './place.js' 
+  _places:  [{
+    type: String
   }]
 });
 
