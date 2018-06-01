@@ -89,16 +89,21 @@ router.post('/', async function(req, res) {
     request.state = req.body.state;
     request.zipcode = req.body.zipcode;
 
-    // if (stringAddressValidator(request.street, request.number, request.neighborhood, request.city, request.state, request.zipcode)) {
-    //   console.log('to aqui');
-    //   // Geocode an address.
-    //   response = await googleMapsClient.geocode({
-    //     address: stringAddress(request.street, request.number, request.neighborhood, request.city, request.state, request.zipcode),
-    //     region: 'br'
-    //   });
-    //   console.log(response);
-    //   //response.json.results[0].geometry.location;
-    // }
+    if (stringAddressValidator(request.street, request.number, request.neighborhood, request.city, request.state, request.zipcode)) {
+      console.log('to aqui');
+      // Geocode an address.
+      googleMapsClient.geocode({
+        address: stringAddress(request.street, request.number, request.neighborhood, request.city, request.state, request.zipcode),
+        region: 'br'
+      }, function(err, response) {
+        if (err) {
+            res.status(400).send(err);
+          } else {
+            request.location_lat = response.json.results[0].geometry.location.lat;
+            request.location_lng = response.json.results[0].geometry.location.lng;
+        }
+      });
+    }
   }
 
   User.findById(req.body._user, function(err, user) {
