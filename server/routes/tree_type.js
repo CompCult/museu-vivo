@@ -42,6 +42,16 @@ inject_place = function(place) {
   return Place.findById(place).exec();
 }
 
+router.get('/:type_id', function(req, res) {
+  TreeType.findById(req.params.tree_id, function(err, tree) {
+    if (err) {
+      res.status(400).send(err);
+    } else {
+      res.status(200).json(tree);
+    }
+  });
+});
+
 //Find by params
 router.get('/query/fields', function(req, res) {
   TreeType.find(req.query, async function(err, trees) {
