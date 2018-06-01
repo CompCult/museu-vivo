@@ -72,4 +72,14 @@ router.post('/remove/:place_id', function(req, res) {
   });
 });
 
+router.delete('/:place_id', function(req, res) {
+  Place.remove({ _id: req.params.place_id }, function(err) {
+    if (err) {
+      res.status(400).send(err);
+    } else {
+      res.status(200).send("Lugar removido.");
+    }
+  });
+});
+
 module.exports = router;

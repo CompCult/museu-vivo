@@ -1,6 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+var googleMapsClient = require('@google/maps').createClient({
+  key: 'AIzaSyBaMgfWN5qg0lNFV_iKyqlGFtM457-mB-E'
+});
+
 
 var Uploads = require('../upload.js');
 var TreeRequest = require('../models/mytree_exclusives/tree_request.js');
@@ -32,7 +36,7 @@ router.get('/query/fields', function(req, res) {
 });
 
 //Create
-router.post('/', function(req, res) {
+router.post('/', async function(req, res) {
   var request             = new TreeRequest();
 
   request._user           = req.body._user;
@@ -78,12 +82,23 @@ router.post('/', function(req, res) {
     }
   } else {
     request.street = req.body.street;
-    request.complement = req.body.complement;
+    if (req.body.complement) request.complement = req.body.complement;
     request.number = req.body.number;
     request.neighborhood = req.body.neighborhood;
     request.city = req.body.city;
     request.state = req.body.state;
     request.zipcode = req.body.zipcode;
+
+    // if (stringAddressValidator(request.street, request.number, request.neighborhood, request.city, request.state, request.zipcode)) {
+    //   console.log('to aqui');
+    //   // Geocode an address.
+    //   response = await googleMapsClient.geocode({
+    //     address: stringAddress(request.street, request.number, request.neighborhood, request.city, request.state, request.zipcode),
+    //     region: 'br'
+    //   });
+    //   console.log(response);
+    //   //response.json.results[0].geometry.location;
+    // }
   }
 
   User.findById(req.body._user, function(err, user) {
