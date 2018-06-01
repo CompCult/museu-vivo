@@ -43,7 +43,7 @@ inject_place = function(place) {
 }
 
 router.get('/:type_id', function(req, res) {
-  TreeType.findById(req.params.tree_id, function(err, tree) {
+  TreeType.findById(req.params.type_id, function(err, tree) {
     if (err) {
       res.status(400).send(err);
     } else {
