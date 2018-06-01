@@ -60,15 +60,23 @@ router.post('/', function(req, res) {
     request.location_lng    = req.body.location_lng;
 
     let xmlHttp = new XMLHttpRequest();
-    //+ req.body.location_lat + "," + req.body.location_lng
-    xmlHttp.onreadystatechange = function() { 
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-            console.log(xmlHttp.responseText);
-    }
-    xmlHttp.open("GET", "http://maps.googleapis.com/maps/api/geocode/json?latlng=-7.21768522262573,-35.9105224609375", true); // true for asynchronous 
+    xmlHttp.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + req.body.location_lat + "," + req.body.location_lng + "&sensor=true", true); // true for asynchronous 
     xmlHttp.send(null);
+
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+          results = JSON.parse(xmlHttp.responseText);
+          if (results["results"] !== undefined) {
+            request.number = results["results"][0]["address_components"][0]["long_name"];
+            request.street = results["results"][0]["address_components"][1]["long_name"];
+            request.neighborhood = results["results"][0]["address_components"][2]["long_name"];
+            request.city = results["results"][0]["address_components"][3]["long_name"];
+            request.state = results["results"][0]["address_components"][5]["short_name"];
+            request.zipcode = results["results"][0]["address_components"][7]["long_name"];
+          }
+        }
+    }
   } else {
-    request.sidewalk_size   = req.body.sidewalk_size;
     request.street = req.body.street;
     request.complement = req.body.complement;
     request.number = req.body.number;
@@ -90,7 +98,6 @@ router.post('/', function(req, res) {
           res.status(200).send(request);
         }
       });
-      res.status(200).send(user);
     }
   });
 });
