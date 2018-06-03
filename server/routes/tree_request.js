@@ -70,13 +70,14 @@ router.post('/', async function(req, res) {
     xmlHttp.onreadystatechange = function() { 
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
           results = JSON.parse(xmlHttp.responseText);
+          console.log(results)
           if (results["results"] !== undefined) {
-            request.number = results["results"][0]["address_components"][0]["long_name"];
-            request.street = results["results"][0]["address_components"][1]["long_name"];
-            request.neighborhood = results["results"][0]["address_components"][2]["long_name"];
-            request.city = results["results"][0]["address_components"][3]["long_name"];
-            request.state = results["results"][0]["address_components"][5]["short_name"];
-            request.zipcode = results["results"][0]["address_components"][7]["long_name"];
+            if (results["results"][0]["address_components"][0]) request.number = results["results"][0]["address_components"][0]["long_name"];
+            if (results["results"][0]["address_components"][1]) request.street = results["results"][0]["address_components"][1]["long_name"];
+            if (results["results"][0]["address_components"][2]) request.neighborhood = results["results"][0]["address_components"][2]["long_name"];
+            if (results["results"][0]["address_components"][3]) request.city = results["results"][0]["address_components"][3]["long_name"];
+            if (results["results"][0]["address_components"][5]) request.state = results["results"][0]["address_components"][5]["short_name"];
+            if (results["results"][0]["address_components"][7])request.zipcode = results["results"][0]["address_components"][7]["long_name"];
           }
         }
     }
