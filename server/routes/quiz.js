@@ -28,7 +28,7 @@ router.get('/public', function(req, res) {
       for (var i = 0; i < quizzes.length; i++) {
         let quiz = quizzes[i];
         let end_time = new Date(quiz.end_time);
-        let in_time = end_time.toLocaleString() > date.toLocaleString();
+        let in_time = end_time.toLocaleString() >= date.toLocaleString();
 
         if (quiz.single_answer) {
           await wasQuizAnswered(quiz._id, req.query.user_id).then((answered) => {
