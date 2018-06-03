@@ -78,6 +78,23 @@ router.post('/', async function(req, res) {
             if (results["results"][0]["address_components"][3]) request.city = results["results"][0]["address_components"][3]["long_name"];
             if (results["results"][0]["address_components"][5]) request.state = results["results"][0]["address_components"][5]["short_name"];
             if (results["results"][0]["address_components"][7])request.zipcode = results["results"][0]["address_components"][7]["long_name"];
+          
+            User.findById(req.body._user, function(err, user) {
+              if (user && (user.request_limit < req.body.quantity)) {
+                res.status(400).send('A quantidade pedida ultrapassa o limite do usuário.');
+              } else {
+                request.save(function(err) {
+                  if (err) {
+                    res.status(400).send(err);
+                  } else {
+                    createTrees(request);
+                    res.status(200).send(request);
+                  }
+                });
+              }
+            });
+          } else {
+            res.status(400).send("A api não permitiu a operação.");
           }
         }
     }
@@ -91,7 +108,6 @@ router.post('/', async function(req, res) {
     request.zipcode = req.body.zipcode;
 
     if (stringAddressValidator(request.street, request.number, request.neighborhood, request.city, request.state, request.zipcode)) {
-      console.log('to aqui');
       // Geocode an address.
       googleMapsClient.geocode({
         address: stringAddress(request.street, request.number, request.neighborhood, request.city, request.state, request.zipcode),
@@ -102,25 +118,25 @@ router.post('/', async function(req, res) {
           } else {
             request.location_lat = response.json.results[0].geometry.location.lat;
             request.location_lng = response.json.results[0].geometry.location.lng;
+
+            User.findById(req.body._user, function(err, user) {
+            if (user && (user.request_limit < req.body.quantity)) {
+              res.status(400).send('A quantidade pedida ultrapassa o limite do usuário.');
+            } else {
+              request.save(function(err) {
+                if (err) {
+                  res.status(400).send(err);
+                } else {
+                  createTrees(request);
+                  res.status(200).send(request);
+                }
+              });
+            }
+          });
         }
       });
     }
   }
-
-  User.findById(req.body._user, function(err, user) {
-    if (user && (user.request_limit < req.body.quantity)) {
-      res.status(400).send('A quantidade pedida ultrapassa o limite do usuário.');
-    } else {
-      request.save(function(err) {
-        if (err) {
-          res.status(400).send(err);
-        } else {
-          createTrees(request);
-          res.status(200).send(request);
-        }
-      });
-    }
-  });
 });
 
 // Update
