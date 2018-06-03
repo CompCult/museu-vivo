@@ -26,7 +26,7 @@ var TreeRequest = new Schema({
   street: String,
   complement: String,
   number: Number,
-  neighborood: String,
+  neighborhood: String,
   city: String,
   state: String,
   zipcode: String,
