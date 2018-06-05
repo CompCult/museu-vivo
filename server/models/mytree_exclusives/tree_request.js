@@ -20,6 +20,7 @@ var TreeRequest = new Schema({
   location_lng: String,
   quantity: Number,
   requester_name: String,
+  requester_phone: String,
   place: String,
   photo: String,
   sidewalk_size: Number,

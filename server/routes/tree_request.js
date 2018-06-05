@@ -8,6 +8,7 @@ var googleMapsClient = require('@google/maps').createClient({
 
 var Uploads = require('../upload.js');
 var TreeRequest = require('../models/mytree_exclusives/tree_request.js');
+var TreeType = require('../models/mytree_exclusives/tree_type.js');
 var Tree = require('../models/mytree_exclusives/tree.js');
 var User = require('../models/user.js');
 
@@ -44,6 +45,7 @@ router.post('/', async function(req, res) {
   request.tree_name       = req.body.tree_name;
   request.quantity        = req.body.quantity;
   request.requester_name  = req.body.requester_name;
+  request.requester_phone = req.body.requester_phone;
   request.place			      = req.body.place;
   request.status          = 'Pendente';
   request.updated_at      = new Date();
@@ -142,15 +144,17 @@ router.post('/', async function(req, res) {
 // Update
 router.put('/:tree_id', function(req, res) {
   TreeRequest.findById(req.params.tree_id, function(err, request) {
-    if (req.body._user) request._user                   = req.body._user;
-	  if (req.body._type) request._type             		  = req.body._type;
-    if (req.body.tree_name) request.tree_name           = req.body.tree_name;
-    if (req.body.location_lat) request.location_lat     = req.body.location_lat;
-    if (req.body.location_lng) request.location_lng     = req.body.location_lng;
-    if (req.body.quantity) request.quantity             = req.body.quantity;
-	  if (req.body.requester_name) request.requester_name = req.body.requester_name;
-    if (req.body.place) request.place                   = req.body.place;
+    if (req.body._user) request._user                     = req.body._user;
+	  if (req.body._type) request._type             		    = req.body._type;
+    if (req.body.tree_name) request.tree_name             = req.body.tree_name;
+    if (req.body.location_lat) request.location_lat       = req.body.location_lat;
+    if (req.body.location_lng) request.location_lng       = req.body.location_lng;
+    if (req.body.quantity) request.quantity               = req.body.quantity;
+	  if (req.body.requester_name) request.requester_name   = req.body.requester_name;
+    if (req.body.requester_phone) request.requester_phone = req.body.requester_phone;
+    if (req.body.place) request.place                     = req.body.place;
     if (req.body.status) {
+      if (req.body.status == 'Aprovado') decreaseTrees(request.quantity, request._type); 
       request.status      = req.body.status;
       request.updated_at  = new Date();
     }
@@ -211,6 +215,26 @@ createTrees = function(request) {
     }
   });
 } 
+
+decreaseTrees = function(quantity, type) {
+  TreeType.findById(type, function(err, tt) {
+    if (err) {
+      console.log(err);
+    } else if (!tt) {
+      console.log("Tipo não existente!");
+    } else {
+      tt.ammount_available -= quantity;
+
+      tt.save(function(err) {
+        if (err) {
+          console.log('algo deu ruim');
+        } else {
+          console.log('Arvores retiradas!');
+        }
+      });
+    }
+  });
+}
 
 stringAddressValidator = function(street='', number='', neighborhood='', city='', state='', zipcode='') {
   if ((street || street.lenght > 0) &&
