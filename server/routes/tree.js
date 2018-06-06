@@ -82,7 +82,6 @@ router.post('/', function(req, res) {
   tree.name             = req.body.name;
   tree.location_lat     = req.body.location_lat;
   tree.location_lng     = req.body.location_lng;
-  if(req.body.planting_date) tree.planting_date = new Date(req.body.planting_date);
 
   tree.save(function(err) {
     if (err) {

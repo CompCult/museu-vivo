@@ -36,6 +36,7 @@ var TreeRequest = new Schema({
     default: Date.now
   },
   answer_date: Date
+  planting_date: Date
 });
 
 TreeRequest.plugin(autoInc, {id: "request_id"});

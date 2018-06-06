@@ -18,8 +18,7 @@ var Tree = new Schema({
   },
   name: String,
   location_lat: String, 
-  location_lng: String,
-  planting_date: Date
+  location_lng: String
 });
 
 Tree.plugin(autoInc, {id: "tree_id"});

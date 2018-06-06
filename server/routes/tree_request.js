@@ -49,7 +49,7 @@ router.post('/', async function(req, res) {
   request.place			      = req.body.place;
   request.status          = 'Pendente';
   request.updated_at      = new Date();
-
+  if(req.body.planting_date) request.planting_date = new Date(req.body.planting_date);
   if (req.body.photo) {
     var date = new Date();
     var timeStamp = date.toLocaleString(); 
@@ -153,6 +153,7 @@ router.put('/:tree_id', function(req, res) {
 	  if (req.body.requester_name) request.requester_name   = req.body.requester_name;
     if (req.body.requester_phone) request.requester_phone = req.body.requester_phone;
     if (req.body.place) request.place                     = req.body.place;
+    if(req.body.planting_date) request.planting_date = new Date(req.body.planting_date);
     if (req.body.status) {
       if (req.body.status == 'Aprovado') decreaseTrees(request.quantity, request._type); 
       request.status      = req.body.status;
