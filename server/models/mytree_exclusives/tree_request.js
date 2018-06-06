@@ -35,7 +35,7 @@ var TreeRequest = new Schema({
     type: Date,
     default: Date.now
   },
-  answer_date: Date
+  answer_date: Date,
   planting_date: Date
 });
 
