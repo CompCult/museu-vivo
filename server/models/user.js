@@ -5,16 +5,26 @@ var autoInc   = require('mongoose-sequence')(mongoose);
 
 var User = new Schema({
   _id: Number,
-  name: String,
+  name: {
+    type: String,
+    required: true
+  },
   picture: String,
   email: {
   	type: String,
   	lowercase: true,
-    unique: true
+    unique: true,
+    required: true
   },
-  type: String,
+  type: {
+    type: String,
+    required: true
+  },
   institution: String,
-  password: String,
+  password: {
+    type: String,
+    required: true
+  },
   new_password: String,
   birth: Date,
   sex: String,

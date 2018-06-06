@@ -14,7 +14,7 @@ var TreeRequest = new Schema({
   tree_name: String,
   status: {
     type: String,
-    enum: ['Aprovado','Rejeitado','Pendente']
+    enum: ['Aprovado','Rejeitado','Pendente', 'Plantada']
   },
   location_lat: String, 
   location_lng: String,

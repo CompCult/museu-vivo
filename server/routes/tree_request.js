@@ -155,7 +155,12 @@ router.put('/:tree_id', function(req, res) {
     if (req.body.place) request.place                     = req.body.place;
     if(req.body.planting_date) request.planting_date = new Date(req.body.planting_date);
     if (req.body.status) {
-      if (req.body.status == 'Aprovado') decreaseTrees(request.quantity, request._type); 
+      if (req.body.status == 'Aprovado') {
+        decreaseTrees(request.quantity, request._type);
+      } else if (req.body.status == 'Plantada') {
+        request.planting_date = new Date();
+      }
+
       request.status      = req.body.status;
       request.updated_at  = new Date();
     }
