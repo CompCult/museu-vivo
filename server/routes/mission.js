@@ -43,7 +43,7 @@ router.get('/public', function(req, res) {
         let mission = missions[i];
         console.log(mission);
         let end_time = new Date(mission.end_time);
-        let in_time = end_time.toLocaleString() > date.toLocaleString();
+        let in_time = end_time >= date;
 
         if (mission.single_answer) {
           console.log('single answer');
