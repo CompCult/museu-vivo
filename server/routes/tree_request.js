@@ -73,7 +73,6 @@ router.post('/', async function(req, res) {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
           results = JSON.parse(xmlHttp.responseText);
           if (results["results"] !== undefined) {
-            console.log(results["results"][0]["address_components"][2]["long_name"]);
             if (results["results"][0]["address_components"][0]) request.number = results["results"][0]["address_components"][0]["long_name"];
             if (results["results"][0]["address_components"][1]) request.street = results["results"][0]["address_components"][1]["long_name"];
             if (results["results"][0]["address_components"][2]) request.neighborhood = results["results"][0]["address_components"][2]["long_name"];
