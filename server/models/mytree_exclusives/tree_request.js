@@ -26,7 +26,7 @@ var TreeRequest = new Schema({
   sidewalk_size: Number,
   street: String,
   complement: String,
-  number: Number,
+  number: String,
   neighborhood: String,
   city: String,
   state: String,
