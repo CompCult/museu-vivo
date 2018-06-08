@@ -17,7 +17,7 @@ router.get('/', function(req, res) {
         let start = new Date(appointment.start_date);
         let end   = new Date(appointment.end_date);
 
-        return (end.toLocaleString() >= date.toLocaleString());
+        return (end >= date);
       }); 
 
       res.status(200).json(results);
