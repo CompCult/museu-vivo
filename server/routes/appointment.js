@@ -16,6 +16,10 @@ router.get('/', function(req, res) {
       results = appointments.filter(function(appointment) {
         let start = new Date(appointment.start_date);
         let end   = new Date(appointment.end_date);
+        
+        console.log("end: " + end);
+        console.log("date: " + date);
+        console.log("end >= date: " + (end >= date));
 
         return (end >= date);
       }); 
