@@ -10,20 +10,63 @@ router.get('/', function(req, res) {
     if (err) {
       res.status(400).send(err);
     } else {
-      let promises;
+      filtered_trees = []
 
-      try {
-        promises = trees.map(inject_request);
-      } catch (err) {
-        res.status(400).send(err); 
-      }
+      for (var i = 0; i < trees.length; i++) {
+        let t = trees[i];
+        request = await TreeRequest.findById(t._request).exec();
 
-      Promise.all(promises).then(function(results) {
-          res.status(200).json(results);
-      });
-    }
+        if(request && request.status == "Rejeitado") {
+          let date = new Date();
+          let oneDay = 24*60*60*1000;
+
+          diff = Math.round(Math.abs((request.updated_at.getTime() - date.getTime())/(oneDay)));
+          console.log(diff);
+          if (diff >= 30) {
+            filtered_trees.push(request);
+          }
+        }
+
+        if (i == trees.length-1) {
+          let promises;
+
+          try {
+            promises = filtered_trees.map(inject_request);
+          } catch (err) {
+            res.status(400).send(err); 
+          }
+
+          Promise.all(promises).then(function(results) {
+              res.status(200).json(results);
+          });
+        }
+      };
+    };
   });
 });
+
+
+var filter_trees = async function(tree) {
+  let request = await TreeRequest.findById(tree._request).exec();
+  let date = new Date();
+  let oneDay = 24*60*60*1000;
+
+  if(request && request.status == "Rejeitado") {
+    diff = Math.round(Math.abs((request.updated_at.getTime() - date.getTime())/(oneDay)));
+    console.log(diff);
+    if (diff == 0) {
+      console.log('diff == 0');
+      return false;
+    } else {
+      console.log('else');
+      return true;
+    }
+  } else {
+    console.log('else');
+    return true;
+  }
+}
+
 
 //Show
 router.get('/:tree_id', function(req, res) {

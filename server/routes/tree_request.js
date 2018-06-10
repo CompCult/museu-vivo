@@ -202,6 +202,7 @@ router.delete('/:tree_id', function(req, res) {
     if (err) {
       res.status(400).send(err);
     } else {
+      removeTrees(req.params.tree_id);
       res.status(200).send("Árvore removida.");
     }
   });
@@ -219,12 +220,22 @@ createTrees = function(request) {
 
   tree.save(function(err) {
     if (err) {
-      console.log('algo deu ruim');
+      console.log('Algo deu errado...');
     } else {
       console.log('Arvores criadas!');
     }
   });
 } 
+
+removeTrees = function(request_id) {
+  Tree.remove({ "_request": request_id}, function(err) {
+    if (err) {
+      console.log('Algo deu errado...');
+    } else {
+      console.log('Árvores deletadas!');
+    }
+  });
+}
 
 decreaseTrees = function(quantity, type) {
   TreeType.findById(type, function(err, tt) {

@@ -31,6 +31,7 @@ var TreeRequest = new Schema({
   city: String,
   state: String,
   zipcode: String,
+  updated_at: Date,
   request_date: {
     type: Date,
     default: Date.now
