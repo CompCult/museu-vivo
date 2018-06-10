@@ -14,13 +14,8 @@ router.get('/', function(req, res) {
       let date  = new Date();
 
       results = appointments.filter(function(appointment) {
-        let start = new Date(appointment.start_date);
         let end   = new Date(appointment.end_date);
-        
-        console.log("end: " + end);
-        console.log("date: " + date);
-        console.log("end >= date: " + (end >= date));
-
+        end.setHours(23, 59, 0);
         return (end >= date);
       }); 
 
@@ -61,8 +56,13 @@ router.post('/', function(req, res) {
   appointment.description = req.body.description;
   appointment.place       = req.body.place;
   appointment.type        = req.body.type;
-  appointment.start_date  = new Date(req.body.start_date);
-  appointment.end_date    = new Date(req.body.end_date);
+
+  let start_time = new Date(req.body.start_date);
+  let end_time = new Date(req.body.end_date);
+  start_time.setHours(23, 59, 0);
+  end_time.setHours(23, 59, 0);
+  appointment.start_date      = start_time;
+  appointment.end_date        = end_time;
 
   appointment.save(function(err) {
     if (err) {
@@ -80,8 +80,16 @@ router.put('/:appointment_id', function(req, res) {
     if (req.body.description) appointment.description = req.body.description;
     if (req.body.place) appointment.place             = req.body.place;
     if (req.body.type) appointment.type               = req.body.type;
-    if (req.body.start_date) appointment.start_date   = new Date(req.body.start_date);
-    if (req.body.end_date) appointment.end_date       = new Date(req.body.end_date);
+    if (req.body.start_date) {
+      start_date   = new Date(req.body.start_date);
+      start_date.setHours(23, 59, 0);
+      appointment.start_date = start_date;
+    }
+    if (req.body.end_date) {
+      end_date       = new Date(req.body.end_date);
+      end_date.setHours(23, 59, 0);
+      appointment.end_date = end_date;
+    }
     
     appointment.save(function(err) {
       if (err) {

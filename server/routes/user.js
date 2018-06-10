@@ -161,7 +161,11 @@ router.post('/update/:user_id', function(req, res) {
     if (req.body.points) user.points = req.body.points;
     if (req.body.sec_points) user.sec_points = req.body.sec_points;
     if (req.body.request_limit) user.request_limit = req.body.request_limit;
-    if (req.body.banned_until) user.banned_until = new Date(req.body.banned_until);
+    if (req.body.banned_until) {
+      let banned = new Date(req.body.banned_until);
+      banned.setHours(23, 59, 0);
+      user.banned_until = banned;
+    }
     if (req.body.picture) {
       var date = new Date();
       var timeStamp = date.toLocaleString();
@@ -219,7 +223,11 @@ router.put('/:user_id', function(req, res) {
     if (req.body.points) user.points = req.body.points;
     if (req.body.sec_points) user.sec_points = req.body.sec_points;
     if (req.body.request_limit) user.request_limit = req.body.request_limit;
-    if (req.body.banned_until) user.banned_until = new Date(req.body.banned_until);
+    if (req.body.banned_until) {
+      let banned = new Date(req.body.banned_until);
+      banned.setHours(23, 59, 0);
+      user.banned_until = banned;
+    }
     if (req.body.picture) {
       var date = new Date();
       var timeStamp = date.toLocaleString();

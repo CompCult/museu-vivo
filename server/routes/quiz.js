@@ -28,6 +28,7 @@ router.get('/public', function(req, res) {
       for (var i = 0; i < quizzes.length; i++) {
         let quiz = quizzes[i];
         let end_time = new Date(quiz.end_time);
+        end_time.setHours(23, 59, 0);
         let in_time = end_time.getTime() >= date.getTime();
 
         if (quiz.single_answer) {
@@ -55,6 +56,7 @@ router.get('/private', function(req, res) {
       res.status(404).send('Quiz não encontrado');
     } else {
       let end_time = new Date(quiz.end_time);
+      end_time.setHours(23, 59, 0);
       let date = new Date();
       let answered;
 
@@ -64,7 +66,7 @@ router.get('/private', function(req, res) {
         res.status(400).send(err);
       }
 
-      if (end_time.toLocaleString() < date.toLocaleString()) {
+      if (end_time < date) {
         res.status(401).send('Quiz expirado');
       } else if (quiz.single_answer && answered) {
         res.status(401).send('Quiz já foi respondido');
@@ -106,8 +108,14 @@ router.post('/', function(req, res) {
   quiz.alternative_a   = req.body.alternative_a;
   quiz.alternative_b   = req.body.alternative_b;
   quiz.correct_answer  = req.body.correct_answer;
-  quiz.start_time      = new Date(req.body.start_time);
-  quiz.end_time        = new Date(req.body.end_time);
+
+  let start_time = new Date(req.body.start_time);
+  let end_time = new Date(req.body.end_time);
+  start_time.setHours(23, 59, 0);
+  end_time.setHours(23, 59, 0);
+  quiz.start_time      = start_time;
+  quiz.end_time        = end_time;
+
   if(req.body.alternative_c) quiz.alternative_c   = req.body.alternative_c;
   if(req.body.alternative_d) quiz.alternative_d   = req.body.alternative_d;
   if(req.body.alternative_e) quiz.alternative_e   = req.body.alternative_e;
@@ -132,8 +140,16 @@ router.put('/:quiz_id', function(req, res) {
     if(req.body.alternative_a) quiz.alternative_a   = req.body.alternative_a;
     if(req.body.alternative_b) quiz.alternative_b   = req.body.alternative_b;
     if(req.body.correct_answer) quiz.correct_answer = req.body.correct_answer;
-    if(req.body.start_time) quiz.start_time         = new Date(req.body.start_time);
-    if(req.body.end_time) quiz.end_time             = new Date(req.body.end_time);
+    if(req.body.start_time) {
+      start_time = new Date(req.body.start_time);
+      start_time.setHours(23, 59, 0);
+      quiz.start_time = start_time;
+    }
+    if(req.body.end_time) {
+      end_time = new Date(req.body.end_time);
+      end_time.setHours(23, 59, 0);
+      quiz.end_time = end_time;
+    }
     if(req.body.alternative_c) quiz.alternative_c   = req.body.alternative_c;
     if(req.body.alternative_d) quiz.alternative_d   = req.body.alternative_d;
     if(req.body.alternative_e) quiz.alternative_e   = req.body.alternative_e;

@@ -43,6 +43,7 @@ router.get('/public', function(req, res) {
         let mission = missions[i];
         console.log(mission);
         let end_time = new Date(mission.end_time);
+        end_time.setHours(23, 59, 0);
         let in_time = end_time >= date;
 
         if (mission.single_answer) {
@@ -73,6 +74,7 @@ router.get('/private', function(req, res) {
       res.status(404).send('Missão não encontrada');
     } else {
       let end_time = new Date(mission.end_time);
+      end_time.setHours(23, 59, 0);
       let date = new Date();
       let answered;
 
@@ -115,8 +117,13 @@ router.post('/', function(req, res) {
   mission.has_text         = req.body.has_text;
   mission.has_geolocation  = req.body.has_geolocation;
   mission.end_message      = req.body.end_message;
-  mission.start_time       = new Date(req.body.start_time);
-  mission.end_time         = new Date(req.body.end_time);
+
+  let start_time = new Date(req.body.start_time);
+  let end_time = new Date(req.body.end_time);
+  start_time.setHours(23, 59, 0);
+  end_time.setHours(23, 59, 0);
+  mission.start_time      = start_time;
+  mission.end_time        = end_time;
 
   mission.save(function(err) {
     if (err) {
@@ -142,8 +149,16 @@ router.put('/:mission_id', function(req, res) {
     if (req.body.has_text !== undefined) mission.has_text               = req.body.has_text;
     if (req.body.has_geolocation !== undefined) mission.has_geolocation = req.body.has_geolocation;
     if (req.body.end_message) mission.end_message         = req.body.end_message;
-    if (req.body.start_time) mission.start_time           = new Date(req.body.start_time);
-    if (req.body.end_time) mission.end_time               = new Date(req.body.end_time);
+    if(req.body.start_time) {
+      start_time = new Date(req.body.start_time);
+      start_time.setHours(23, 59, 0);
+      mission.start_time = start_time;
+    }
+    if(req.body.end_time) {
+      end_time = new Date(req.body.end_time);
+      end_time.setHours(23, 59, 0);
+      mission.end_time = end_time;
+    }
     
     mission.save(function(err) {
       if (err) {
