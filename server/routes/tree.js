@@ -3,6 +3,7 @@ var router = express.Router();
 
 var Tree = require('../models/mytree_exclusives/tree.js');
 var TreeRequest = require('../models/mytree_exclusives/tree_request.js');
+var TreeType = require('../models/mytree_exclusives/tree_type.js');
 
 //Index
 router.get('/', function(req, res) {
