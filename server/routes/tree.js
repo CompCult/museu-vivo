@@ -10,11 +10,14 @@ router.get('/', function(req, res) {
     if (err) {
       res.status(400).send(err);
     } else {
+      console.log(trees)
       filtered_trees = []
       let promises;
 
-      for (var i = 0; i < trees.length-1; i++) {
+      for (var i = 0; i < trees.length; i++) {
         let t = trees[i];
+        console.log('oi');
+        console.log(t)
         request = await TreeRequest.findById(t._request).exec();
 
         if(request && request.status == "Rejeitado") {
