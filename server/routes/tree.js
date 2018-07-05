@@ -10,14 +10,11 @@ router.get('/', function(req, res) {
     if (err) {
       res.status(400).send(err);
     } else {
-      console.log(trees)
       filtered_trees = []
       let promises;
 
       for (var i = 0; i < trees.length; i++) {
         let t = trees[i];
-        console.log('oi');
-        console.log(t)
         request = await TreeRequest.findById(t._request).exec();
 
         if(request && request.status == "Rejeitado") {
@@ -61,12 +58,16 @@ router.get('/:tree_id', function(req, res) {
 
 var inject_request = async function(tree) {
     let request_id = tree._request;
+    let type_id = tree._type;
     let string = JSON.stringify(tree);
     let tree_with_request = JSON.parse(string);
     let request_obj;
 
     request_obj = await TreeRequest.findById(request_id).exec();
+    type_obj = await TreeType.findById(type_id).exec();
     tree_with_request._request = request_obj;
+    tree_with_request._type = type_obj;
+
 
     return tree_with_request;
 }
