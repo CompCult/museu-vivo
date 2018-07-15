@@ -13,9 +13,9 @@ var aws = require('aws-sdk');
 
 // mongoose local
 //mongoose.connect('mongodb://localhost/mean-auth');
-// mongoose 
+// mongoose
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://atelier:Atelier1516@minha-arvore-shard-00-00-hv0nd.mongodb.net:27017,minha-arvore-shard-00-01-hv0nd.mongodb.net:27017,minha-arvore-shard-00-02-hv0nd.mongodb.net:27017/test?ssl=true&replicaSet=minha-arvore-shard-0&authSource=admin');
+mongoose.connect('mongodb://admin:Atelier1516@museu-vivo-shard-00-00-swcnf.mongodb.net:27017,museu-vivo-shard-00-01-swcnf.mongodb.net:27017,museu-vivo-shard-00-02-swcnf.mongodb.net:27017/test?ssl=true&replicaSet=museu-vivo-shard-0&authSource=admin&retryWrites=true');
 
 //Get the default connection
 var db = mongoose.connection;
