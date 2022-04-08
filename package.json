@@ -15,7 +15,7 @@
     "ejs": "2.x",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
-    "moment": "^2.22.0",
+    "moment": "^2.29.2",
     "mongoose": "^4.4.5",
     "mongoose-sequence": "^4.0.0",
     "morgan": "^1.7.0",
