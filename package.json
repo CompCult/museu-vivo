@@ -16,7 +16,7 @@
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "moment": "^2.22.0",
-    "mongoose": "^4.4.5",
+    "mongoose": "^4.13.21",
     "mongoose-sequence": "^4.0.0",
     "morgan": "^1.7.0",
     "nodemailer": "^4.4.2",
